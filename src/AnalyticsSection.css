@@ -1,0 +1,230 @@
+.analytics {
+    background: #f9fafb;
+}
+
+/* ====== METRICS ====== */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+.metric-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    transition: transform 0.2s;
+}
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+.metric-value {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.metric-value.danger { color: #dc2626; }
+.metric-value.success { color: #16a34a; }
+.metric-value.primary { color: #2563eb; }
+.metric-value.warning { color: #ea580c; }
+.metric-label {
+    font-size: 14px;
+    color: #4b5563;
+    margin-bottom: 8px;
+}
+.metric-change {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+.metric-change.up {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+}
+.metric-change.down {
+    background: rgba(22, 163, 74, 0.1);
+    color: #16a34a;
+}
+
+/* ====== CHARTS SECTION ====== */
+.charts-container {
+    width: 100%; /* fix for overflow */
+    display: grid;
+    gap: 20px;
+    margin-bottom: 32px;
+}
+.chart {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    box-sizing: border-box; /* fix for padding + width */
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto; /* in case any overflow, enable scrolling */
+}
+.chart-header {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+.chart-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.chart-subtitle {
+    font-size: 14px;
+    color: #4b5563;
+}
+.chart-canvas {
+    width: 100%;
+    height: 250px;
+    min-width: 0;         /* fix for forcing shrink */
+    display: block;       /* fix for some chart.js issues */
+    overflow-x: auto;     /* allow safe scrolling if needed */
+    /* No fixed width, let parent handle it */
+}
+.chart-canvas canvas {
+    width: 100% !important;    
+    height: 100% !important;
+    max-width: 100vw; 
+    min-width: 0;
+    display: block;
+    box-sizing: border-box;
+}
+/* ====== CTA CARD SECTION ====== */
+.analytics-cta-card {
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px #eceffb2d, 0 1px 3px #e7e9f827;
+    padding: 34px 20px 20px 20px;
+    max-width: 1200px;
+    margin: 27px auto 42px auto;
+    text-align: center;
+}
+.analytics-cta-card h4 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #232249;
+}
+.analytics-cta-card p {
+    font-size: 15.5px;
+    color: #4b5563;
+    margin-bottom: 18px;
+}
+.analytics-cta-card .btn-primary {
+    background: #2563eb;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.12rem;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 32px;
+    box-shadow: 0 1px 4px #bdd8fd26;
+    cursor: pointer;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.16s, color 0.12s;
+}
+.analytics-cta-card .btn-primary:hover {
+    background: #163ca6;
+    color: #f2f3ffd9;
+}
+
+/* ====== DESKTOP ====== */
+@media (min-width: 900px) {
+    .container { max-width: 1200px; }
+    .charts-container {
+        grid-template-columns: 2fr 1fr;
+    }
+    .analytics-cta-card {
+        padding: 34px 38px 23px 38px;
+        margin-top: 34px;
+        font-size: 1.09em;
+    }
+}
+
+/* ====== TABLET ====== */
+@media (max-width: 900px) and (min-width: 640px) {
+    .charts-container {
+        grid-template-columns: 1fr 1fr;
+    }
+    .container {
+        max-width: 96vw;
+        padding: 0 2vw;
+    }
+}
+
+/* ====== MOBILE ====== */
+@media (max-width: 639px) {
+
+    .charts-container {
+        grid-template-columns: 1fr;
+        padding: 0;
+        width: 95vw;
+        overflow-x: hidden;
+    }
+
+
+    .metrics-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .metric-card {
+        padding: 14px;
+    }
+    .chart {
+        padding: 7px 2vw 15px 2vw;
+        width: 100vw;
+               max-width: 95vw;
+        box-sizing: border-box;
+    } .chart-canvas {
+        height: 170px;
+        width: 100%;
+        min-width: 0;
+        padding: 0;
+        margin: 0;
+    }    .chart-canvas canvas {
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 0;
+        max-width: 100vw;
+        margin: 0;
+        padding: 0;
+        display: block;
+    }
+    .chart-header {
+        padding-bottom: 7px;
+        margin-bottom: 7px;
+    }
+    .chart-title { font-size: 15px; }
+    .chart-canvas { height: 160px; }
+    .analytics-cta-card {
+        padding: 18px 3vw 17px 3vw;
+        font-size: 0.99em;
+        margin-top: 14px;
+        margin-bottom: 19px;
+    }
+    .analytics-cta-card h4 {
+        font-size: 16px;
+    }
+    .analytics-cta-card p {
+        font-size: 13.8px;
+    }
+    .analytics-cta-card .btn-primary {
+        font-size: 0.97em;
+        padding: 10px 10vw;
+    }
+}
+
+

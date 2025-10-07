@@ -1,0 +1,134 @@
+.site-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 15px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  position: fixed;
+  width: 100vw;
+  min-height: 52px;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+}
+.site-logo { font-size: 1.5rem; font-weight: 700; color: #2563eb; display: flex; align-items: center; gap: 11px; }
+.site-menu { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+.site-menu li a { color: #353b56; text-decoration: none; padding: 6px 15px; border-radius: 8px; }
+.site-menu li a.active, .site-menu li a:hover { background: #e7f0ff; color: #2563eb;}
+.header-btn { background: #2563eb; color: #fff; border: none; padding: 10px 22px; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; }
+.header-btn:hover { background: #1737a0; }
+
+.nav-toggle { display: none; background: none; border: none; flex-direction: column; align-items: center; cursor: pointer; padding: 4px; }
+.nav-toggle .bar { display: block; width: 26px; height: 3px; margin: 3px 0; background: #2563eb; border-radius: 2px; transition: 0.3s; }
+.nav-toggle .bar.open:nth-child(1) { transform: rotate(45deg) translateY(8px); }
+.nav-toggle .bar.open:nth-child(2) { opacity: 0; }
+.nav-toggle .bar.open:nth-child(3) { transform: rotate(-45deg) translateY(-8px); }
+
+/* Desktop */
+@media (min-width: 700px) {
+  .nav-toggle { display: none; }
+  .site-menu { display: flex !important; }
+  .header-btn { margin-left: 26px;}
+}
+/* Mobile/Tablet */
+@media (max-width: 699px) {
+  .nav-toggle { display: flex; }
+  .site-menu {
+    position: absolute;
+    left: 0;
+    top: 65px;
+    background: #fff;
+    width: 95vw;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 0 9px 22px #18305315;
+    gap: 9px;
+    padding: 19px 0 18px 27px;
+    border-bottom: 1px solid #e6e9f6;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.28s, visibility 0.19s;
+  }
+  .site-menu.open {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    z-index: 999;
+  }
+  .header-btn { margin-left: 0; margin-top: 9px; width: calc(100vw - 50px);}
+  .site-navbar { flex-direction: row; padding: 13px 5vw;}
+}
+
+
+/* Floating plus icon - only on mobile */
+.report-btn-float {
+  display: none;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  font-size: 1.9rem;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 14px rgba(25,41,105,0.21);
+  border: none;
+  z-index: 1020;
+}
+.report-btn-float:active { background: #14326c; }
+@media (max-width: 780px) {
+  .report-btn-float { display: flex; }
+  .header-btn { display: none; }
+}
+.modal-overlay {
+  position: fixed;
+  z-index: 1100;
+  inset: 0;
+  background: rgba(0,0,0,.38);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background: #fff;
+  width: 96vw; max-width: 410px;
+  border-radius: 16px;
+  padding: 28px 14px 14px 14px;
+  box-shadow: 0 6px 36px rgba(40,60,120,0.17);
+  animation: modalfadein .26s;
+}
+
+/* Nicely animated in */
+@keyframes modalfadein {
+  from { opacity:0; transform: translateY(32px);}
+  to { opacity:1; transform: translateY(0);}
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 21px; }
+.modal-title { font-size: 1.15rem; font-weight: 600; color: #202f3d; }
+.close-btn { background: none; border: none; font-size: 1.34rem; color: #2563eb; cursor: pointer; }
+
+.form-group { margin-bottom: 14px; }
+.form-label { font-weight: 500; color: #233047; margin-bottom: 5px; display: block;}
+.form-input, .form-textarea, select {
+  width: 100%;
+  font-size: 1rem; border-radius: 6px; border: 1.1px solid #d2d9e3;
+  padding: 6px 13px; background: #f5f7fb; margin-top: 2px;
+  box-sizing: border-box;
+}
+.form-input:focus, .form-textarea:focus, select:focus { border-color: #2563eb; outline: none; }
+.form-textarea { min-height: 64px; resize: vertical; }
+.btn {
+  border-radius: 7px; font-size: 1.01rem; padding: 8px 0;
+  border: none; font-weight: 600; cursor: pointer;
+  margin-bottom: 3px; transition: background .17s;
+}
+.btn-primary { background: #2563eb; color: #fff;}
+.btn-primary:active { background: #174ea6;}
+.btn-secondary { background:#ececec; color:#222f3a;}
+.btn-secondary:active { background: #b8bfcf;}

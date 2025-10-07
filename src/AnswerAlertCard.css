@@ -1,0 +1,104 @@
+.aac-outer {
+  background: #fff;
+  margin: 20px auto;
+  border-radius: 16px;
+  border: 1.4px solid #ececec;
+  box-shadow: 0 2px 13px #04305b0b;
+  padding: 0 0 0 0;
+  max-width: 935px;
+}
+
+.aac-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 21px 23px 0 23px;
+  font-size: 1.16rem;
+  font-weight: 700;
+  color: #20202a;
+}
+.aac-icon { font-size: 20px; }
+.aac-title { font-size: 1.10em; margin-left: 8px; }
+.aac-divider { margin: 14px 0 0 0; border: 0; border-top: 1px solid #f1f1f7; }
+
+.aac-card-main {
+  margin: 18px;
+  margin-bottom: 28px;
+  border-radius: 12px;
+  background: #fcfdff;
+  box-shadow: 0 2px 7px #e7edfa21;
+  border: 1px solid #f3f5f7;
+  padding: 18px 16px 14px 16px;
+}
+.aac-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3px;
+}
+.aac-badge {
+  background: #dc2626;
+  padding: 5px 17px;
+  border-radius: 18px;
+  color: white;
+  font-weight: 700;
+  font-size: 1.01em;
+  letter-spacing: 0.5px;
+  margin-right: 7px;
+}
+.aac-date {
+  color: #75778b;
+  font-size: 1em;
+  font-weight: 600;
+  margin-left: 20px;
+  margin-top: 2px;
+}
+.aac-headline {
+  font-size: 1.17em;
+  font-weight: 700;
+  text-align: center;
+  margin: 18px 0 9px 0;
+  color: #212149;
+}
+.aac-desc {
+  font-size: 1.05em;
+  color: #313149;
+  text-align: center;
+  margin: 0 0 16px 0;
+  max-width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.aac-link {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 7px 18px 7px 18px;
+  border-radius: 8px;
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 1.07em;
+  background: transparent;
+  text-decoration: none;
+  text-align: center;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background .17s, color .14s;
+}
+.aac-link:hover,
+.aac-link:focus {
+  background: #2563eb12;
+  color: #1530bd;
+}
+.aac-link-ext {
+  margin-left: 6px;
+  font-size: 1.13em;
+  vertical-align: middle;
+}
+@media (max-width: 650px) {
+  .aac-outer { padding: 0 !important; }
+  .aac-card-main { padding: 11px 2vw 10px 2vw;}
+  .aac-headline { font-size: 1.05em; }
+  .aac-desc { font-size: 0.98em; }
+}
