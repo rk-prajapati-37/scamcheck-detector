@@ -14,6 +14,7 @@
   font-weight: 700;
   color: #1f2937;
   margin: 0 auto;
+  text-align: center;
 }
 .section-subtitle {
   font-size: 1.11rem;
@@ -55,16 +56,16 @@
 /* ---- Category Filter Slider ---- */
 .category-filters {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   overflow-x: auto;
-  flex-wrap: nowrap;
-  padding: 10px 0 6px 0;
-  scrollbar-width: thin;
-  scrollbar-color: #888 transparent;
+  padding: 12px 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
 }
-.category-filters::-webkit-scrollbar {
-  height: 6px;
-}
+.category-filters::-webkit-scrollbar { display: none; }
+.category-filters.dragging { cursor: grabbing; user-select: none; }
+
 .category-filters::-webkit-scrollbar-track {
   background: transparent;
 }
@@ -114,9 +115,9 @@
   gap: 20px 18px;
 }
 .story-card {
-  background: #fff;
+  /* background: #fff; */
   border-radius: 16px;
-  border: 1.2px solid #ececec;
+  /* border: 1.2px solid #ececec; */
   margin-bottom: 20px;
   box-shadow: 0 1px 9px #e7eefe21;
   overflow: hidden;

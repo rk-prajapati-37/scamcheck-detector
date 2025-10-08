@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import useDragScroll from "./useDragScroll"; // Hook import
 import "./StoriesSection.css";
 
 const CATEGORY_MAP = {
@@ -29,11 +30,9 @@ const CATEGORIES = [
 
 const API_URL = "https://microservices.coolify.vps.boomlive.in/api/scamcheck/articles";
 
-// Solid color utility from gradient string
 function getSolidColor(bg) {
   if (!bg) return "#aaa";
   if (!bg.startsWith("linear-gradient")) return bg;
-  // Get first hex color from gradient
   const match = bg.match(/#([0-9a-fA-F]{6})/);
   return match ? `#${match[1]}` : "#888";
 }
@@ -111,6 +110,8 @@ export default function StoriesSection() {
     ...Array(3 - stories.length).fill(null)
   ];
 
+  const categoryDragRef = useDragScroll();
+
   return (
     <section id="stories" className="stories">
       <div className="container">
@@ -125,7 +126,7 @@ export default function StoriesSection() {
           <div className="filter-row">
             <div className="filter-group category-group">
               <label className="filter-label">Category</label>
-              <div className="category-filters">
+              <div className="category-filters" ref={categoryDragRef}>
                 {CATEGORIES.map(item =>
                   <button
                     key={item.key}
@@ -169,11 +170,9 @@ export default function StoriesSection() {
           {padStories.map((story, idx) => {
             if (!story) {
               return (
-                <div 
+                <div
                   className="story-card"
                   style={{
-                    background: "#f7f7fa",
-                    border: "1.5px dashed #ececec",
                     boxShadow: "none",
                     minHeight: "340px"
                   }}

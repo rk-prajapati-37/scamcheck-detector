@@ -17,35 +17,35 @@ const TAGS_DATA = [
     desc: "UPI scams, fake QR codes, investment schemes, and unauthorized transaction attempts.",
     color: "#f97316",
     icon: "fas fa-credit-card",
-    url: "https://example.com/tag/financial"
+    url: "https://www.boomlive.in/tags/financial"
   },
   {
     label: "Social Engineering",
     desc: "Fake job offers, lottery wins, relationship scams, and emotional manipulation tactics.",
     color: "#22c55e",
     icon: "fas fa-users",
-    url: "https://example.com/tag/social"
+    url: "https://www.boomlive.in/tags/social"
   },
   {
     label: "Tech Support",
     desc: "Fake virus alerts, remote access requests, and software installation scams.",
     color: "#a78bfa",
     icon: "fas fa-laptop",
-    url: "https://example.com/tag/tech"
+    url: "https://www.boomlive.in/tags/tech"
   },
   {
     label: "Crypto Scam",
     desc: "Fraud ICOs, fake crypto exchanges, crypto investment scams.",
     color: "#facc15",
     icon: "fas fa-coins",
-    url: "https://example.com/tag/crypto"
+    url: "https://www.boomlive.in/tags/crypto"
   },
   {
     label: "Loan Fraud",
     desc: "Fake loan offers, high interest traps, unauthorized lending.",
     color: "#0ea5e9",
     icon: "fas fa-hand-holding-usd",
-    url: "https://example.com/tag/loan"
+    url: "https://www.boomlive.in/tags/loan"
   }
   // Add more tags as needed...
 ];
