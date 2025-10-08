@@ -2,37 +2,45 @@ import React, { useState, useEffect } from "react";
 import "./StoriesSection.css";
 
 const CATEGORY_MAP = {
-  schemes:    { bg: "linear-gradient(45deg,#dc2626,#ef4444)", icon: "fas fa-mobile-alt", tag: "Schemes Scam" },
-  finance:    { bg: "linear-gradient(45deg,#dc2626,#ef4444)", icon: "fas fa-mobile-alt", tag: "Finance Scam" },
-  romance:    { bg: "linear-gradient(45deg,#ec4899,#f43f5e)", icon: "fas fa-heart", tag: "Romance Scam" },
-  medical:    { bg: "linear-gradient(45deg,#059669,#10b981)", icon: "fas fa-syringe", tag: "Medical Scam" },
-  gift:       { bg: "linear-gradient(45deg,#7c3aed,#8b5cf6)", icon: "fas fa-gift", tag: "Gift Scam" },
-  digital:    { bg: "linear-gradient(45deg,#64748b,#6366f1)", icon: "fas fa-shield-alt", tag: "Digital Arrest" },
-  phishing:   { bg: "linear-gradient(45deg,#2563eb,#3b82f6)", icon: "fas fa-fish", tag: "Phishing Scam" },
-  job:        { bg: "linear-gradient(45deg,#fdba74,#ea580c)", icon: "fas fa-user-tie", tag: "Job Scam" },
-  scam:       { bg: "linear-gradient(45deg,#ef4444 60%,#dc2626 90%)", icon: "fas fa-exclamation-circle", tag: "Scam" },
-  all:        { bg: "#f2f2f8", icon: "fas fa-globe", tag: "" }
+  schemes: { tag: "Schemes Scam" },
+  finance: { tag: "Finance Scam" },
+  romance: { tag: "Romance Scam" },
+  medical: { tag: "Medical Scam" },
+  gift: { tag: "Gift Scam" },
+  digital: { tag: "Digital Arrest" },
+  phishing: { tag: "Phishing Scam" },
+  job: { tag: "Job Scam" },
+  scam: { tag: "Scam" },
+  all: { tag: "" }
 };
 
 const CATEGORIES = [
-  { key: "all", label: "All" },
-  { key: "finance", label: "Finance Scam" },
-  { key: "romance", label: "Romance Scam" },
-  { key: "schemes", label: "Schemes Scam" },
-  { key: "medical", label: "Medical Scam" },
-  { key: "gift", label: "Gift Scam" },
-  { key: "digital", label: "Digital Arrest" },
-  { key: "phishing", label: "Phishing Scam" },
-  { key: "job", label: "Job Scam" }
+  { bg: "#16a34a", key: "all", label: "All" },
+  { bg: "linear-gradient(45deg,#ef4444 60%,#dc2626 90%)", key: "scam", label: "Scam" },
+  { bg: "linear-gradient(45deg,#dc2626,#ef4444)", key: "finance", label: "Finance Scam" },
+  { bg: "linear-gradient(45deg,#ec4899,#f43f5e)", key: "romance", label: "Romance Scam" },
+  { bg: "linear-gradient(45deg,#dc2626,#ef4444)", key: "schemes", label: "Schemes Scam" },
+  { bg: "linear-gradient(45deg,#059669,#10b981)", key: "medical", label: "Medical Scam" },
+  { bg: "linear-gradient(45deg,#7c3aed,#8b5cf6)", key: "gift", label: "Gift Scam" },
+  { bg: "linear-gradient(45deg,#64748b,#6366f1)", key: "digital", label: "Digital Arrest" },
+  { bg: "linear-gradient(45deg,#2563eb,#3b82f6)", key: "phishing", label: "Phishing Scam" },
+  { bg: "linear-gradient(45deg,#fdba74,#ea580c)", key: "job", label: "Job Scam" }
 ];
 
 const API_URL = "https://microservices.coolify.vps.boomlive.in/api/scamcheck/articles";
 
-// --- Category detection: always matches lowercased keys only ---
+// Solid color utility from gradient string
+function getSolidColor(bg) {
+  if (!bg) return "#aaa";
+  if (!bg.startsWith("linear-gradient")) return bg;
+  // Get first hex color from gradient
+  const match = bg.match(/#([0-9a-fA-F]{6})/);
+  return match ? `#${match[1]}` : "#888";
+}
+
 function getCardCategory(storyData) {
   if (!storyData || !storyData.tags) return "scam";
   const tags = String(storyData.tags).toLowerCase();
-  // Add all keys
   for (const key of Object.keys(CATEGORY_MAP)) {
     if (key !== "scam" && key !== "all" && tags.includes(key)) return key;
   }
@@ -50,8 +58,6 @@ export default function StoriesSection() {
   const [hasMore, setHasMore] = useState(true);
 
   const count = 6;
-
-  // --- API-compatible time map (debugged/working with backend) ---
   const timeMap = {
     today: "today",
     week: "this-week",
@@ -60,7 +66,6 @@ export default function StoriesSection() {
     "all-time": "all-time"
   };
 
-  // --- Fetch with safe fallback + loading ---
   async function fetchStories(reset = false) {
     if (loading) return;
     setLoading(true);
@@ -101,7 +106,6 @@ export default function StoriesSection() {
     // eslint-disable-next-line
   }, [category, timeFilter, searchText]);
 
-  // --- Always return at least 3 slots in grid for design ---
   const padStories = stories.length >= 3 ? stories : [
     ...stories,
     ...Array(3 - stories.length).fill(null)
@@ -123,10 +127,17 @@ export default function StoriesSection() {
               <label className="filter-label">Category</label>
               <div className="category-filters">
                 {CATEGORIES.map(item =>
-                  <button key={item.key}
+                  <button
+                    key={item.key}
                     className={`category-btn${category === item.key ? " active" : ""}`}
                     onClick={() => setCategory(item.key)}
-                    type="button">
+                    type="button"
+                    style={{
+                      background: category === item.key ? getSolidColor(item.bg) : "#f3f8fe",
+                      color: category === item.key ? "#fff" : "#25263b",
+                      borderColor: category === item.key ? getSolidColor(item.bg) : "#dbeafe"
+                    }}
+                  >
                     {item.label}
                   </button>
                 )}
@@ -157,7 +168,6 @@ export default function StoriesSection() {
         <div className="story-grid">
           {padStories.map((story, idx) => {
             if (!story) {
-              // empty slot for design
               return (
                 <div 
                   className="story-card"
@@ -173,9 +183,9 @@ export default function StoriesSection() {
             }
             const d = story.data || story;
             const cat = getCardCategory(d);
-            const style = CATEGORY_MAP[cat] || CATEGORY_MAP.scam;
+            const categoryObj = CATEGORIES.find(c => c.key === cat);
+            const cardBg = categoryObj ? categoryObj.bg : "#f2f2f8";
             const url = story.url || d.url;
-
             return (
               <a
                 key={url || idx}
@@ -187,45 +197,37 @@ export default function StoriesSection() {
               >
                 <div className="story-card-top"
                   style={{
-                    background: style.bg,
+                    background: cardBg,
                     minHeight: "125px",
                     borderRadius: "16px 16px 0 0",
                     position: "relative",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center"
+                    justifyContent: "center",
+                    overflow: "hidden"
                   }}>
-                  {/* Tag top-left */}
-                  <span className="story-card-tag" style={{
-                    position: "absolute",
-                    left: 18,
-                    top: 15,
-                    zIndex: 3
-                  }}>{style.tag}</span>
-                  {/* Icon center */}
-                  <i className={style.icon} style={{
-                    position: "relative",
-                    zIndex: 2,
-                    color: "white",
-                    fontSize: "2.4em"
-                  }} />
-                  {/* Thumb image (background effect only!) */}
+                  <span
+                    className="story-card-tag"
+                    style={{
+                      background: getSolidColor(cardBg),
+                      color: "#fff",
+                      position: "absolute",
+                      left: 18,
+                      top: 15,
+                      zIndex: 3,
+                      padding: "3px 10px",
+                      borderRadius: "12px",
+                      fontWeight: "600",
+                      fontSize: "0.84em"
+                    }}
+                  >
+                    {categoryObj?.label}
+                  </span>
                   {d.thumbUrl && (
                     <img
                       src={d.thumbUrl}
                       alt={d.heading || ""}
                       className="story-thumb"
-                      style={{
-                        position: "absolute",
-                        left: 0,
-                        top: 0,
-                        height: "100%",
-                        width: "100%",
-                        objectFit: "cover",
-                        borderRadius: "16px 16px 0 0",
-                        opacity: 0.18,
-                        zIndex: 1
-                      }}
                     />
                   )}
                 </div>

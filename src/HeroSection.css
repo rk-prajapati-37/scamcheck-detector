@@ -135,7 +135,10 @@ background: #eff6ff;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.19s;
-  display: flex; align-items: center; gap:11px;
+      display: flex;
+    align-items: center;
+    gap: 11px;
+    justify-content: center;
 }
 .hero-analyze-btn:hover { background: #1737a0; }
 .hero-clear-btn {
@@ -147,7 +150,10 @@ background: #eff6ff;
   font-size: 1.17rem;
   font-weight: 700;
   cursor: pointer;
-  display: flex; align-items: center; gap:9px;
+ display: flex;
+    align-items: center;
+    gap: 9px;
+    justify-content: center;
 }
 .hero-clear-btn:hover { background: #e9f0ff; }
 .hero-alert-space { margin-top: 32px; margin-bottom: 7px; }

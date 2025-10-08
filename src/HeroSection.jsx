@@ -3,7 +3,7 @@ import AnswerAlertCard from "./AnswerAlertCard";
 import RelatedArticles from "./RelatedArticles";
 import "./HeroSection.css";
 
-const HeroSection = ({ onAnalyze, alertData, articles, loading }) => {
+const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg }) => {
   const [query, setQuery] = useState("");
   const example = "Earn 5x profit in 7 days! 🚀 Invest just ₹500 today on Global Index.";
 
@@ -31,7 +31,8 @@ const HeroSection = ({ onAnalyze, alertData, articles, loading }) => {
               <div className="hero-example-card">
                 <span className="hero-example-title" aria-label="Try this example">
                   <i className="fas fa-lightbulb" aria-hidden="true"></i> Try this example:
-                </span><br />
+                </span>
+                <br />
                 <span
                   className="hero-example-msg"
                   onClick={handleExampleClick}
@@ -84,6 +85,24 @@ const HeroSection = ({ onAnalyze, alertData, articles, loading }) => {
                 <div style={{ marginTop: 8 }}>Analyzing with AI...</div>
               </div>
             )}
+            {noAnswerMsg && (
+              <div
+                style={{
+                  backgroundColor: "#fdecea",
+                  color: "#611a15",
+                  padding: "12px 18px",
+                  borderRadius: "8px",
+                  margin: "20px auto 0 auto",
+                  textAlign: "center",
+                  fontWeight: "600",
+                  maxWidth: "530px",
+                }}
+                role="alert"
+                aria-live="polite"
+              >
+                {noAnswerMsg}
+              </div>
+            )}
             {articles && articles.length > 0 && (
               <div className="hero-articles-space" style={{ marginTop: "20px" }}>
                 <RelatedArticles articles={articles} />
@@ -91,7 +110,7 @@ const HeroSection = ({ onAnalyze, alertData, articles, loading }) => {
             )}
             {alertData && (
               <div className="hero-alert-space" style={{ marginTop: "20px" }}>
-                <AnswerAlertCard
+                {/* <AnswerAlertCard
                   category={alertData.category}
                   scamType={alertData.scamType}
                   headline={alertData.headline}
@@ -99,7 +118,7 @@ const HeroSection = ({ onAnalyze, alertData, articles, loading }) => {
                   publishDate={alertData.publishDate}
                   date={alertData.date}
                   link={alertData.link}
-                />
+                /> */}
               </div>
             )}
           </div>
