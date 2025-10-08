@@ -1,0 +1,133 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(29, 41, 71, 0.16);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.report-modal {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 9px 44px #18315538;
+  max-width: 490px;
+  width: 98%;
+  padding: 33px 26px 27px 26px;
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.modal-title {
+  font-size: 1.37rem;
+  font-weight: 700;
+  color: #233256;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: #757fa6;
+  cursor: pointer;
+  transition: color 0.18s;
+}
+
+.close-btn:hover {
+  color: #ff2850;
+}
+
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row {
+  display: flex;
+  gap: 22px;
+  margin-bottom: 4px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex: 1;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #313c5b;
+  margin-bottom: 3px;
+  font-size: 0.98em;
+}
+
+.form-input,
+.form-textarea {
+  font-size: 1em;
+  border-radius: 8px;
+  border: 1px solid #d7dbea;
+  padding: 8px 10px;
+  outline: none;
+  background: #f5f8fc;
+  color: #2e354b;
+  transition: border 0.14s, box-shadow 0.15s;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px #dbeafe;
+}
+
+.form-textarea {
+  min-height: 42px;
+  resize: vertical;
+}
+
+.button-row {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.btn {
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.08em;
+  padding: 10px 30px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: background .13s, color .12s, border .16s;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #1a4ada;
+}
+
+.btn-secondary {
+  background: #eff2fc;
+  color: #233256;
+  border: 1.2px solid #c3cfec;
+}
+
+.btn-secondary:hover {
+  background: #2563eb;
+  color: #fff;
+}

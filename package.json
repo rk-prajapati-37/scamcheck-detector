@@ -15,12 +15,15 @@
     "react-slick": "^0.31.0",
     "slick-carousel": "^1.8.1",
     "web-vitals": "^2.1.4"
+    
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "proxy": "https://script.google.com"
+
   },
   "eslintConfig": {
     "extends": [

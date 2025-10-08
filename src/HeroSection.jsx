@@ -5,7 +5,7 @@ import "./HeroSection.css";
 
 const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg }) => {
   const [query, setQuery] = useState("");
-  const example = "Earn 5x profit in 7 days! 🚀 Invest just ₹500 today on Global Index.";
+  const example = "Earn 5x profit in 7 days! 🚀 Invest just ₹500 today on Global Index. 100% guaranteed returns. Register now 👉 h5.globalindex.cc";
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg }) =
                 <span
                   className="hero-example-msg"
                   onClick={handleExampleClick}
-                  style={{ cursor: "pointer" }}
+                  // style={{ cursor: "pointer" }}
                   tabIndex={0}
                   role="button"
                   onKeyDown={(e) => {

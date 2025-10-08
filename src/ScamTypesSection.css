@@ -1,91 +1,288 @@
-.scam-types-section {
-  margin: 48px auto 34px auto;
-  max-width: 1350px;
-  padding: 0 18px;
-  text-align: center;
-}
-.scam-types-header {
-  margin-bottom: 20px;
-}
-.scam-types-title {
-  font-size: 2.3rem;
-  font-weight: 700;
-  color: #19213c;
-  margin-bottom: 6px;
-}
-.scam-types-desc {
-  color: #444a60;
-  font-size: 1.13rem;
-  margin-bottom: 23px;
-  max-width: 800px;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-.scam-types-slider-wrap {
-  width: 100%;
-  padding-top: 16px;
+/* ScamTypesSection.css */
+
+.section {
+  padding: 80px 20px;
+  background: #ffffff;
 }
 
-.scam-types-card-wrap {
-  padding: 11px;
-  width: 280px;
-  box-sizing: border-box;
-}
-
-.scam-types-card {
-  background: #fff;
-  border-radius: 20px;
-  border: 2.3px solid #e5e7eb;
-  box-shadow: 0 3px 18px 0 #e6e9f322;
-  min-height: 295px;
+.container {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 38px 20px 19px 20px;
-  transition: box-shadow 0.19s, border 0.13s;
-  cursor: pointer;
-  outline: none;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 12px;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: #64748b;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Scam Cards Grid */
+.scam-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.scam-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #e2e8f0;
 }
-.scam-types-card:hover, .scam-types-card:focus {
-  box-shadow: 0 6px 26px 0 #76aae638;
-  border-color: #2563eb;
+
+.scam-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  border-color: #cbd5e1;
 }
-.scam-types-card-icon {
-  width: 62px;
-  height: 62px;
-  margin-bottom: 18px;
-  border-radius: 50%;
-  background: #2563eb;
+
+/* Question Text */
+.scam-question {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  min-height: 42px;
+}
+
+.scam-question .highlight {
+  font-weight: 700;
+  color: #dc2626;
+}
+
+/* Illustration Container */
+.scam-illustration {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 16px 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.25rem;
-  color: #fff;
-  box-shadow: 0 2px 10px #eaeafc6b;
 }
-.scam-types-card-label {
-  font-size: 1.18rem;
-  font-weight: 700;
-  color: #181c39;
-  margin-bottom: 13px;
-  margin-top: 5px;
+
+/* Character Icon Background Circle */
+.scam-character {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: #334155;
+  position: relative;
+  z-index: 2;
+  opacity: 0.9;
 }
-.scam-types-card-desc {
-  color: #3e495e;
-  font-size: 1.06em;
-  line-height: 1.45;
-  max-width: 360px;
+
+.scam-character i {
+  filter: none;
 }
-@media (max-width: 900px) {
-  .scam-types-card {
-    min-height: 210px;
-    padding: 24px 10px;
+
+/* Character Specific Colors - Pastel Backgrounds */
+.scam-character.phishing { 
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.scam-character.finance { 
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.scam-character.romance { 
+  background: #fce7f3;
+  color: #ec4899;
+}
+
+.scam-character.schemes { 
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.scam-character.medical { 
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.scam-character.gift { 
+  background: #f3e8ff;
+  color: #a855f7;
+}
+
+.scam-character.arrest { 
+  background: #fed7aa;
+  color: #ea580c;
+}
+
+.scam-character.job { 
+  background: #d1fae5;
+  color: #10b981;
+}
+
+/* Warning Icon */
+.scam-warning {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 30px;
+  height: 30px;
+  background: white;
+  border: 2px solid #dc2626;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #dc2626;
+  font-weight: bold;
+  z-index: 3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Extra Icon Symbol */
+.scam-icon-symbol {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  z-index: 3;
+  background: white;
+  border: 2px solid;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.scam-icon-symbol.coin {
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+.scam-icon-symbol.heart {
+  border-color: #ec4899;
+  color: #ec4899;
+}
+
+.scam-icon-symbol.pills {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.scam-icon-symbol.gift-icon {
+  border-color: #a855f7;
+  color: #a855f7;
+}
+
+.scam-icon-symbol.handcuffs {
+  border-color: #ea580c;
+  color: #ea580c;
+}
+
+.scam-icon-symbol.briefcase {
+  border-color: #10b981;
+  color: #10b981;
+}
+
+/* Card Title */
+.scam-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin: 12px 0 0 0;
+  transition: color 0.3s ease;
+}
+
+.scam-card:hover h4 {
+  color: #1d4ed8;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .section-title {
+    font-size: 2rem;
   }
-  .scam-types-title { font-size: 1.7rem }
+  
+  .scam-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
 }
-@media (max-width: 600px) {
-  .scam-types-section { padding: 0 2px }
-  .scam-types-card { min-height: 160px; padding: 11px 4px }
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 16px;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .section-subtitle {
+    font-size: 0.95rem;
+  }
+  
+  .scam-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .scam-card {
+    padding: 20px 16px;
+  }
+  
+  .scam-illustration {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .scam-character {
+    width: 90px;
+    height: 90px;
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .scam-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .section-subtitle {
+    font-size: 0.9rem;
+  }
 }

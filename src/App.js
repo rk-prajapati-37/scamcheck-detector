@@ -5,7 +5,7 @@ import AnalyticsSection from "./AnalyticsSection";
 import StoriesSection from "./StoriesSection";
 import ReportScamModal from "./ReportScamModal";
 import ScamTypesSection from "./ScamTypesSection";
-import { searchBoomLiveContent, saveUnansweredQuestion } from "./boomLiveAPI";
+import { searchBoomLiveContent } from "./boomLiveAPI"; // ✅ सिर्फ search function import करो
 import "./App.css";
 
 const BOOMLIVE_WHATSAPP = "+91 77009 06588";
@@ -16,25 +16,32 @@ function App() {
   const [showReport, setShowReport] = useState(false);
   const [noAnswerMsg, setNoAnswerMsg] = useState(null);
 
-  // Pass setNoAnswerMsg to HeroSection
   const handleAnalyze = async (query) => {
     setLoading(true);
     setResult(null);
     setNoAnswerMsg(null);
 
-    const res = await searchBoomLiveContent(query);
+    try {
+      // ✅ यह function internally save भी कर देगा जब जरूरत हो
+      const res = await searchBoomLiveContent(query);
 
-    if (!res.found) {
-      await saveUnansweredQuestion({
-        question: query,
-        category: "general",
-        queryType: "unanswered",
+      // ✅ सिर्फ UI message set करो, duplicate save मत करो
+      if (!res.found) {
+        setNoAnswerMsg("Your question has been saved. No answer found, but we will research it.");
+      }
+
+      setResult(res);
+    } catch (error) {
+      console.error("Error in handleAnalyze:", error);
+      setResult({
+        found: false,
+        error: true,
+        answer: "Something went wrong. Please try again.",
+        articles: []
       });
-      setNoAnswerMsg("Your question has been saved. No answer found, but we will research it.");
+    } finally {
+      setLoading(false);
     }
-
-    setResult(res);
-    setLoading(false);
   };
 
   return (
