@@ -1,79 +1,28 @@
 import React from "react";
 import "./RelatedArticles.css";
 
-const truncate = (text, maxLength = 130) => {
+const truncate = (text, maxLength = 150) => {
   if (!text) return "";
   return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 };
 
-const getArticleDate = (article) => {
-  const raw = article.publishDate || article.createdDate || "";
-  if (!raw) return "";
-  return new Date(raw.replace(" ", "T")).toLocaleDateString("en-IN", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-};
-
-const getScamCategory = (heading, description) => {
-  const text = `${heading} ${description}`.toLowerCase();
-  
-  if (text.includes("bank") || text.includes("sms") || text.includes("verification")) {
-    return { 
-      label: "Bank Verification", 
-      icon: "🏦",
-      badgeLabel: "Verified Safe",
-      badgeColor: "#10b981"
-    };
-  }
-  if (text.includes("investment") || text.includes("ponzi") || text.includes("trading")) {
-    return { 
-      label: "Investment Analysis", 
-      icon: "📊",
-      badgeLabel: "Investment Fraud",
-      badgeColor: "#ef4444"
-    };
-  }
-  if (text.includes("email") || text.includes("lottery") || text.includes("winner")) {
-    return { 
-      label: "Email Scanner", 
-      icon: "📧",
-      badgeLabel: "Email Scam",
-      badgeColor: "#8b5cf6"
-    };
-  }
-  if (text.includes("phishing") || text.includes("link") || text.includes("india post")) {
-    return { 
-      label: "Bank Verification", 
-      icon: "🏦",
-      badgeLabel: "Verified Safe",
-      badgeColor: "#10b981"
-    };
-  }
-  
-  return { 
-    label: "Fraud Prevention", 
-    icon: "🛡️",
-    badgeLabel: "Scam Alert",
-    badgeColor: "#f59e0b"
-  };
-};
-
-const RelatedArticles = ({ articles, loading }) => {
+const RelatedArticles = ({ articles, loading, noAnswerMsg }) => {
   if (loading) {
     return (
       <section className="scam-alert-section">
         <div className="alert-header">
-          <span className="alert-icons">⚠️ 🔺</span>
+          <span className="alert-icons">⚠️ </span>
           <h2 className="alert-title">Scam Alert - Related Stories Found</h2>
         </div>
         <div className="stories-grid-two">
           {[1, 2].map((i) => (
             <div className="story-card skeleton" key={i}>
-              <div className="skeleton-thumb"></div>
+              <div className="skeleton-thumb">
+                <div className="skeleton-shimmer"></div>
+              </div>
               <div className="skeleton-body">
                 <div className="skeleton-line title"></div>
+                <div className="skeleton-line"></div>
                 <div className="skeleton-line"></div>
                 <div className="skeleton-line short"></div>
               </div>
@@ -84,27 +33,44 @@ const RelatedArticles = ({ articles, loading }) => {
     );
   }
 
-  if (!articles || articles.length === 0) return null;
+  // ✅ Show "No Information Found" message
+  if (noAnswerMsg && (!articles || articles.length === 0)) {
+    return (
+      <section className="scam-alert-section">
+        <div className="no-info-card">
+          <div className="no-info-icon">🔍</div>
+          <h3 className="no-info-title">No Specific Information Found</h3>
+          <p className="no-info-text">
+            We couldn't find specific stories matching your input, but please be cautious. 
+            Do not click on suspicious links or share personal information. Our team will 
+            investigate this content from our end and update our database if it's a known scam.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
-  // Show only first 2 articles
+  // Don't show anything if no articles
+  if (!articles || articles.length === 0) {
+    return null;
+  }
+
   const displayArticles = articles.slice(0, 2);
 
   return (
     <section className="scam-alert-section">
       <div className="alert-header">
-        <span className="alert-icons">⚠️ 🔺</span>
+        <span className="alert-icons">⚠️</span>
         <h2 className="alert-title">Scam Alert - Related Stories Found</h2>
       </div>
-      
+
       <div className="stories-grid-two">
         {displayArticles.map((article, index) => {
-          const category = getScamCategory(article.heading || "", article.description || "");
           const isValidUrl = article.url && article.url !== "#";
-          const articleDate = getArticleDate(article);
 
           return (
-            <div className="story-card" key={index}>
-              {/* Image Section */}
+            <div key={index} className="story-card">
+              {/* Image Section - No Badge */}
               <div className="card-thumb-wrapper">
                 {isValidUrl ? (
                   <a href={article.url} target="_blank" rel="noopener noreferrer">
@@ -121,17 +87,10 @@ const RelatedArticles = ({ articles, loading }) => {
                     className="card-thumb"
                   />
                 )}
-                <span 
-                  className="scam-badge" 
-                  style={{ backgroundColor: category.badgeColor }}
-                >
-                  {category.badgeLabel}
-                </span>
               </div>
 
-              {/* Card Body */}
+              {/* Content Section */}
               <div className="card-body">
-                {/* Title */}
                 {isValidUrl ? (
                   <a
                     href={article.url}
@@ -144,20 +103,10 @@ const RelatedArticles = ({ articles, loading }) => {
                 ) : (
                   <h3 className="card-heading">{article.heading || "Untitled Story"}</h3>
                 )}
-
-                {/* Description */}
+                
                 <p className="card-text">{truncate(article.description)}</p>
 
-                {/* Footer */}
-                <div className="card-meta">
-                  <div className="meta-left">
-                    <span className="meta-icon">{category.icon}</span>
-                    <span className="meta-label">{category.label}</span>
-                  </div>
-                  <span className="meta-date">📅 {articleDate}</span>
-                </div>
-
-                {/* Read Report Link */}
+                {/* Read Full Report Link */}
                 {isValidUrl && (
                   <a
                     href={article.url}

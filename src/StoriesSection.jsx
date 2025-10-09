@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
-import useDragScroll from "./useDragScroll"; // Hook import
+import useDragScroll from "./useDragScroll";
 import "./StoriesSection.css";
 
 const CATEGORY_MAP = {
-  schemes: { tag: "Schemes Scam" },
-  finance: { tag: "Finance Scam" },
-  romance: { tag: "Romance Scam" },
-  medical: { tag: "Medical Scam" },
-  gift: { tag: "Gift Scam" },
-  digital: { tag: "Digital Arrest" },
-  phishing: { tag: "Phishing Scam" },
-  job: { tag: "Job Scam" },
-  scam: { tag: "Scam" },
-  all: { tag: "" }
+  schemes: { tag: "Schemes Scam", icon: "💰", color: "#ef4444", slug: "schemes-scam" },
+  finance: { tag: "Finance Scam", icon: "💳", color: "#dc2626", slug: "finance-scam" },
+  romance: { tag: "Romance Scam", icon: "❤️", color: "#ec4899", slug: "romance-scam" },
+  medical: { tag: "Medical Scam", icon: "🏥", color: "#10b981", slug: "medical-scam" },
+  gift: { tag: "Gift Scam", icon: "🎁", color: "#8b5cf6", slug: "gift-scam" },
+  digital: { tag: "Digital Arrest", icon: "📱", color: "#6366f1", slug: "digital-arrest" },
+  phishing: { tag: "Phishing Scam", icon: "🔗", color: "#3b82f6", slug: "phishing-scam" },
+  job: { tag: "Job Scam", icon: "💼", color: "#ea580c", slug: "job-scam" },
+  scam: { tag: "Scam Alert", icon: "⚠️", color: "#f59e0b", slug: "scams" },
+  all: { tag: "", icon: "", color: "#16a34a", slug: "" }
 };
 
 const CATEGORIES = [
   { bg: "#16a34a", key: "all", label: "All" },
-  { bg: "linear-gradient(45deg,#ef4444 60%,#dc2626 90%)", key: "scam", label: "Scam" },
   { bg: "linear-gradient(45deg,#dc2626,#ef4444)", key: "finance", label: "Finance Scam" },
   { bg: "linear-gradient(45deg,#ec4899,#f43f5e)", key: "romance", label: "Romance Scam" },
   { bg: "linear-gradient(45deg,#dc2626,#ef4444)", key: "schemes", label: "Schemes Scam" },
@@ -45,6 +44,20 @@ function getCardCategory(storyData) {
   }
   if (tags.includes("scam")) return "scam";
   return "scam";
+}
+
+function formatDate(dateString) {
+  if (!dateString) return "";
+  try {
+    const date = new Date(dateString.replace(" ", "T"));
+    return date.toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    });
+  } catch {
+    return "";
+  }
 }
 
 export default function StoriesSection() {
@@ -113,12 +126,13 @@ export default function StoriesSection() {
   const categoryDragRef = useDragScroll();
 
   return (
-    <section id="stories" className="stories">
+    <section id="stories" className="stories-section stories">
       <div className="container">
         <div className="section-header">
           <h2 className="section-title">Fact-Checked Stories</h2>
           <p className="section-subtitle">Real cases where our AI helped prevent scams and verify threats</p>
         </div>
+        
         <div className="filter-section">
           <div className="filter-header">
             <i className="fas fa-filter"></i> Filter Stories
@@ -166,90 +180,98 @@ export default function StoriesSection() {
             </div>
           </div>
         </div>
+
         <div className="story-grid">
           {padStories.map((story, idx) => {
             if (!story) {
               return (
                 <div
                   className="story-card"
-                  style={{
-                    boxShadow: "none",
-                    minHeight: "340px"
-                  }}
+                  style={{ boxShadow: "none", minHeight: "340px" }}
                   key={`empty-${idx}`}
                 ></div>
               );
             }
+            
             const d = story.data || story;
             const cat = getCardCategory(d);
             const categoryObj = CATEGORIES.find(c => c.key === cat);
+            const categoryInfo = CATEGORY_MAP[cat] || CATEGORY_MAP.scam;
             const cardBg = categoryObj ? categoryObj.bg : "#f2f2f8";
             const url = story.url || d.url;
+            const formattedDate = formatDate(d.publishDate || d.createdDate || d.date_news || d.date_created);
+            const categoryUrl = `https://www.boomlive.in/tags/${categoryInfo.slug}`;
+            const authorName = d.authorName || d.source || "BoomLive Team";
+
             return (
-              <a
-                key={url || idx}
-                className="story-card"
-                href={url || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: "none" }}
-              >
-                <div className="story-card-top"
-                  style={{
-                    background: cardBg,
-                    minHeight: "125px",
-                    borderRadius: "16px 16px 0 0",
-                    position: "relative",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden"
-                  }}>
-                  <span
-                    className="story-card-tag"
-                    style={{
-                      background: getSolidColor(cardBg),
-                      color: "#fff",
-                      position: "absolute",
-                      left: 18,
-                      top: 15,
-                      zIndex: 3,
-                      padding: "3px 10px",
-                      borderRadius: "12px",
-                      fontWeight: "600",
-                      fontSize: "0.84em"
-                    }}
+              <div key={url || idx} className="story-card-wrapper">
+                <div className="story-card">
+                  <a
+                    href={url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="story-card-top-link"
                   >
-                    {categoryObj?.label}
-                  </span>
-                  {d.thumbUrl && (
-                    <img
-                      src={d.thumbUrl}
-                      alt={d.heading || ""}
-                      className="story-thumb"
-                    />
-                  )}
-                </div>
-                <div className="story-card-content">
-                  <div className="story-card-title">{d.heading || "No title"}</div>
-                  <div className="story-card-desc">{d.description || ""}</div>
-                  <div className="story-card-meta">
-                    <span>
-                      <i className="fas fa-user-circle" style={{ marginRight: 5 }}></i>
-                      {d.authorName || "AI Detection Team"}
-                    </span>
-                    <span>
-                      {(d.publishDate || d.createdDate)
-                        ? new Date((d.publishDate || d.createdDate).replace(" ", "T"))
-                            .toLocaleDateString("en-IN", { month: "long", day: "numeric", year: "numeric" })
-                        : ""}
-                    </span>
+                    <div className="story-card-top" style={{ background: cardBg }}>
+                      <a
+                        href={categoryUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="story-card-tag"
+                        style={{ background: getSolidColor(cardBg) }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {categoryObj?.label}
+                      </a>
+                      {d.thumbUrl && (
+                        <img
+                          src={d.thumbUrl}
+                          alt={d.heading || ""}
+                          className="story-thumb"
+                        />
+                      )}
+                    </div>
+                  </a>
+                  
+                  <div className="story-card-content">
+                    <a
+                      href={url || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="story-title-link"
+                    >
+                      <div className="story-card-title">{d.heading || "No title"}</div>
+                    </a>
+                    
+                    <div className="story-card-desc">{d.description || ""}</div>
+                    
+                    <div className="story-card-footer">
+                      <div className="footer-left">
+                        <span className="footer-icon">👤</span>
+                        <span className="footer-label">{authorName}</span>
+                      </div>
+                      {formattedDate && (
+                        <span className="footer-date">📅 {formattedDate}</span>
+                      )}
+                    </div>
+                    
+                    {url && (
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="read-report-btn"
+                      >
+                        Read Full Report →
+                      </a>
+                    )}
                   </div>
                 </div>
-              </a>
+              </div>
             );
           })}
         </div>
+
         {hasMore && !loading &&
           <div style={{ textAlign: "center", marginTop: 32 }}>
             <button className="btn btn-secondary" onClick={() => fetchStories(false)}>

@@ -1,4 +1,4 @@
-// src/api/boomLiveAPI.js - FINAL VERSION (No Duplicates)
+// src/api/boomLiveAPI.js
 
 const BOOMLIVE_API_URL = "https://a8c4cosco0wc0gg8s40w8kco.vps.boomlive.in/scam-check";
 const SCAMCHECK_ARTICLES_EXTRACTOR = "https://microservices.coolify.vps.boomlive.in/api/extract-scamcheck-articles";
@@ -38,6 +38,8 @@ export const searchBoomLiveContent = async (query) => {
 
         if (extractorResponse.ok) {
           const extractorData = await extractorResponse.json();
+          console.log("📦 Extractor Response:", extractorData); // Debug log
+          
           if (extractorData.success && Array.isArray(extractorData.results)) {
             articles = extractorData.results
               .filter((item) => item.success && item.data)
@@ -46,7 +48,18 @@ export const searchBoomLiveContent = async (query) => {
                 heading: data.heading,
                 description: data.description,
                 thumbUrl: data.thumbUrl,
+                // ✅ Add all date fields
+                date_news: data.date_news,
+                date_created: data.date_created,
+                publishDate: data.publishDate,
+                createdDate: data.createdDate,
+                // ✅ Add tags for better categorization
+                tags: data.tags || data.news_tags || "",
+                // ✅ Add author
+                author: data.source || data.author || "BoomLive",
               }));
+            
+            console.log("✅ Processed articles:", articles); // Debug log
           }
         }
       } catch (extractorError) {
@@ -73,7 +86,7 @@ export const searchBoomLiveContent = async (query) => {
 
     return {
       found: hasAnswer || hasArticles,
-      answer: responseText || "Your question has been saved. No answer found, but we will research it.",
+      answer: responseText || "<b>No Specific Information Found</b> <br/> We couldn't find specific stories matching your input, but please be cautious. Do not click on suspicious links or share personal information. Our team will investigate this content from our end and update our database if it's a known scam.",
       articles,
     };
 
@@ -85,11 +98,11 @@ export const searchBoomLiveContent = async (query) => {
     return {
       found: false,
       error: true,
-      answer: "Your question has been saved. No answer found, but we will research it.",
+      answer: "<b>No Specific Information Found</b> <br/> We couldn't find specific stories matching your input, but please be cautious. Do not click on suspicious links or share personal information. Our team will investigate this content from our end and update our database if it's a known scam.",
       articles: [],
     };
   } finally {
-    // ✅ Save to sheet ONCE at the end (if needed)
+    // Save to sheet ONCE at the end (if needed)
     if (shouldSaveToSheet) {
       console.log("💾 Saving to Google Sheet...");
       await saveUnansweredQuestion({

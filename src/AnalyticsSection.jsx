@@ -140,14 +140,14 @@ const AnalyticsSection = () => {
         </div>
 
         {/* Request Advanced Dashboard */}
-        <div className="analytics-cta-card">
+        {/* <div className="analytics-cta-card">
           <h4>Want More Detailed Analytics?</h4>
           <p>Get access to advanced threat intelligence reports and customizable dashboards</p>
           <button className="btn btn-primary" onClick={handleAdvancedDashboard}>
             <i className="fas fa-chart-line"></i>
             Request Advanced Dashboard
           </button>
-        </div>
+        </div> */}
 
       </div>
     </section>

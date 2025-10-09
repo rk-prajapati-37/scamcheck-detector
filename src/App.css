@@ -115,11 +115,19 @@ header, .hero-section, .analytics-section, .stories-section, .scam-types-section
 .btn-secondary { background:#ececec; color:#222f3a;}
 .btn-secondary:active { background: #b8bfcf;}
 .site-navbar {
-  display: flex; align-items: center; justify-content: space-between;
-  background: #fff; padding: 15px 24px;
-  border-bottom: 1px solid #e5e7eb; position: fixed; width: 100vw; min-height: 52px;
-  z-index: 9999; /* increased so menu stays on top */
-  top: 0; left: 0; box-sizing: border-box;
+     display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: #fff;
+    padding: 15px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    position: fixed;
+    width: 100vw;
+    min-height: 52px;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
 }
 
 /* ensure menu is visible and wraps on small screens */

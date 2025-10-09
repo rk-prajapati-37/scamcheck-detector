@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AnswerAlertCard from "./AnswerAlertCard";
 import RelatedArticles from "./RelatedArticles";
 import "./HeroSection.css";
 
@@ -36,7 +35,6 @@ const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg }) =
                 <span
                   className="hero-example-msg"
                   onClick={handleExampleClick}
-                  // style={{ cursor: "pointer" }}
                   tabIndex={0}
                   role="button"
                   onKeyDown={(e) => {
@@ -63,9 +61,9 @@ const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg }) =
                   className="hero-analyze-btn"
                   disabled={loading || !query.trim()}
                   aria-disabled={loading || !query.trim()}
-                  aria-label="Analyze Threat"
+                  aria-label="Search"
                 >
-                  <i className="fas fa-search" aria-hidden="true"></i> Analyze Threat
+                  <i className="fas fa-search" aria-hidden="true"></i> Search
                 </button>
                 <button
                   type="button"
@@ -79,30 +77,30 @@ const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg }) =
                 </button>
               </div>
             </form>
+
+            {/* ✅ Lines Loading Animation */}
             {loading && (
-              <div style={{ textAlign: "center", margin: "22px 0" }}>
-                <div className="shimmer-loader" />
-                <div style={{ marginTop: 8 }}>Analyzing with AI...</div>
+              <div className="loading-card">
+                <div className="loading-shimmer">
+                  <div className="shimmer-line title"></div>
+                  <div className="shimmer-line"></div>
+                  <div className="shimmer-line"></div>
+                  <div className="shimmer-line short"></div>
+                </div>
+                <div className="loading-text">Analyzing with AI...</div>
               </div>
             )}
-            {noAnswerMsg && (
-              <div
-                style={{
-                  backgroundColor: "#fdecea",
-                  color: "#611a15",
-                  padding: "12px 18px",
-                  borderRadius: "8px",
-                  margin: "20px auto 0 auto",
-                  textAlign: "center",
-                  fontWeight: "600",
-                  maxWidth: "530px",
-                }}
+
+            {/* ✅ No Answer Message - Fixed HTML Rendering */}
+            {!loading && noAnswerMsg && (
+              <div 
+                className="no-answer-box"
                 role="alert"
                 aria-live="polite"
-              >
-                {noAnswerMsg}
-              </div>
+                dangerouslySetInnerHTML={{ __html: noAnswerMsg }}
+              />
             )}
+
             {articles && articles.length > 0 && (
               <div className="hero-articles-space" style={{ marginTop: "20px" }}>
                 <RelatedArticles articles={articles} />
@@ -110,15 +108,7 @@ const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg }) =
             )}
             {alertData && (
               <div className="hero-alert-space" style={{ marginTop: "20px" }}>
-                {/* <AnswerAlertCard
-                  category={alertData.category}
-                  scamType={alertData.scamType}
-                  headline={alertData.headline}
-                  summary={alertData.summary}
-                  publishDate={alertData.publishDate}
-                  date={alertData.date}
-                  link={alertData.link}
-                /> */}
+                {/* Alert content here if needed */}
               </div>
             )}
           </div>

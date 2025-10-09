@@ -188,3 +188,167 @@ display: inline-block;
   0% { left: -80%; }
   100% { left: 110%; }
 }
+
+
+
+/* ==================== LOADING BOX ==================== */
+.loading-box {
+  text-align: center;
+  margin: 24px 0;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.loading-text {
+  margin-top: 16px;
+  font-size: 1.05rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+/* ==================== NO ANSWER BOX - PINK DESIGN ==================== */
+.no-answer-box {
+    margin: 24px 0;
+    color: #78350f;
+    font-size: 1rem;
+    line-height: 1.7;
+    animation: fadeInUp 0.4s ease;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 2px solid #fbbf24;
+    border-radius: 12px;
+    padding: 32px 24px;
+    text-align: center;
+}
+
+/* ✅ Style for HTML content inside */
+.no-answer-box h5 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 12px;
+}
+.no-answer-box h5 i.fas.fa-search {
+    color: #f59e0b;
+    margin-bottom: 16px;
+}
+
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== SHIMMER LOADER UPDATE ==================== */
+.shimmer-loader {
+  width: 100%;
+  max-width: 500px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 50%, #e5e7eb 100%);
+  background-size: 200% 100%;
+  animation: shimmerWave 2s linear infinite;
+}
+
+@keyframes shimmerWave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+/* ==================== LOADING ANIMATION - LINES ==================== */
+.loading-card {
+  max-width: 700px;
+  margin: 24px auto;
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+}
+
+.loading-shimmer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.shimmer-line {
+  height: 16px;
+  background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 50%, #e5e7eb 100%);
+  background-size: 200% 100%;
+  animation: shimmerWave 2s linear infinite;
+  border-radius: 6px;
+}
+
+.shimmer-line.title {
+  width: 70%;
+  height: 20px;
+  margin-bottom: 8px;
+}
+
+.shimmer-line.short {
+  width: 50%;
+}
+
+@keyframes shimmerWave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.loading-card .loading-text {
+  text-align: center;
+  font-size: 1.05rem;
+  color: #4b5563;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+/* ==================== RESPONSIVE FOR LOADING ==================== */
+@media (max-width: 768px) {
+  .loading-card {
+    padding: 20px;
+  }
+
+  .loading-card .loading-text {
+    font-size: 1rem;
+  }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .no-answer-box {
+    padding: 20px;
+    font-size: 0.95rem;
+  }
+
+  .no-answer-box b,
+  .no-answer-box strong {
+    font-size: 1.05rem;
+  }
+
+  .loading-box {
+    padding: 16px;
+  }
+
+  .loading-text {
+    font-size: 1rem;
+  }
+}

@@ -1,49 +1,67 @@
 import { useRef, useEffect } from "react";
 
-export default function useDragScroll() {
-  const ref = useRef();
+const useDragScroll = () => {
+  const ref = useRef(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
 
   useEffect(() => {
-    const elem = ref.current;
-    if (!elem) return;
-    let isDown = false;
-    let startX = 0;
-    let scrollLeft = 0;
+    const el = ref.current;
+    if (!el) return;
 
-    const onMouseDown = e => {
-      isDown = true;
-      elem.classList.add("dragging");
-      startX = e.pageX - elem.offsetLeft;
-      scrollLeft = elem.scrollLeft;
+    // ✅ Horizontal mouse wheel scroll
+    const handleWheel = (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        el.scrollLeft += e.deltaY;
+      }
     };
-    const onMouseLeave = () => {
-      isDown = false;
-      elem.classList.remove("dragging");
+
+    // Mouse drag scroll (desktop only)
+    const handleMouseDown = (e) => {
+      if (e.target.tagName === 'BUTTON') return;
+      isDragging.current = true;
+      el.classList.add("dragging");
+      startX.current = e.pageX - el.offsetLeft;
+      scrollLeft.current = el.scrollLeft;
     };
-    const onMouseUp = () => {
-      isDown = false;
-      elem.classList.remove("dragging");
-    };
-    const onMouseMove = e => {
-      if (!isDown) return;
+
+    const handleMouseMove = (e) => {
+      if (!isDragging.current) return;
       e.preventDefault();
-      const x = e.pageX - elem.offsetLeft;
-      const walk = (x - startX);
-      elem.scrollLeft = scrollLeft - walk;
+      const x = e.pageX - el.offsetLeft;
+      const walk = (x - startX.current) * 2;
+      el.scrollLeft = scrollLeft.current - walk;
     };
 
-    elem.addEventListener("mousedown", onMouseDown);
-    elem.addEventListener("mouseleave", onMouseLeave);
-    elem.addEventListener("mouseup", onMouseUp);
-    elem.addEventListener("mousemove", onMouseMove);
+    const handleMouseUp = () => {
+      isDragging.current = false;
+      el.classList.remove("dragging");
+    };
+
+    const handleMouseLeave = () => {
+      isDragging.current = false;
+      el.classList.remove("dragging");
+    };
+
+    // Add event listeners
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    el.addEventListener("mousedown", handleMouseDown);
+    el.addEventListener("mousemove", handleMouseMove);
+    el.addEventListener("mouseup", handleMouseUp);
+    el.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
-      elem.removeEventListener("mousedown", onMouseDown);
-      elem.removeEventListener("mouseleave", onMouseLeave);
-      elem.removeEventListener("mouseup", onMouseUp);
-      elem.removeEventListener("mousemove", onMouseMove);
+      el.removeEventListener("wheel", handleWheel);
+      el.removeEventListener("mousedown", handleMouseDown);
+      el.removeEventListener("mousemove", handleMouseMove);
+      el.removeEventListener("mouseup", handleMouseUp);
+      el.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, []);
 
   return ref;
-}
+};
+
+export default useDragScroll;

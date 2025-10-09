@@ -27,7 +27,7 @@ function App() {
 
       // ✅ सिर्फ UI message set करो, duplicate save मत करो
       if (!res.found) {
-        setNoAnswerMsg("Your question has been saved. No answer found, but we will research it.");
+        setNoAnswerMsg("<h5><i class=\"fas fa-search\"></i> No Specific Information Found</h5><p>We couldn't find specific stories matching your input, but please be cautious. Do not click on suspicious links or share personal information. Our team will investigate this content from our end and update our database if it's a known scam.</p>");
       }
 
       setResult(res);

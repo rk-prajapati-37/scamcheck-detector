@@ -59,7 +59,7 @@
     z-index: 999;
   }
   .header-btn { margin-left: 0; margin-top: 9px; width: calc(100vw - 50px);}
-  .site-navbar { flex-direction: row; padding: 13px 5vw;}
+  /* .site-navbar { flex-direction: row; padding: 13px 5vw;} */
 }
 
 
