@@ -81,7 +81,7 @@ const AnalyticsSection = () => {
   };
 
   return (
-    <section className="analytics-section analytics">
+    <section id="analytics" className="analytics-section analytics">
       <div className="container">
         <h2 className="section-title">Threat Analytics Dashboard</h2>
         <div className="section-subtitle">

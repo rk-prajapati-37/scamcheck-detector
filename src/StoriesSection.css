@@ -346,21 +346,22 @@
 
 /* ==================== LOAD MORE BUTTON ==================== */
 .btn.btn-secondary {
-  border-radius: 10px;
-  background: #eff6ff;
-  color: #1e40af;
-  font-weight: 600;
-  font-size: 1.05rem;
-  padding: 12px 36px;
-  border: 1.5px solid rgba(37, 99, 235, 0.27);
-  margin: 0 auto;
-  box-shadow: 0 1px 6px rgba(189, 216, 253, 0.14);
-  cursor: pointer;
-  outline: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.14s, color 0.11s, border 0.18s;
+    border-radius: 10px;
+    background: #eff6ff;
+    color: #1e40af;
+    font-weight: 600;
+    font-size: 1.05rem;
+    padding: 10px 20px;
+    border: 1.5px solid rgba(37, 99, 235, 0.27);
+    margin: 0 auto;
+    box-shadow: 0 1px 6px rgba(189, 216, 253, 0.14);
+    cursor: pointer;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.14s, color 0.11s, border 0.18s;
+    justify-content: center;
 }
 
 .btn.btn-secondary:hover {

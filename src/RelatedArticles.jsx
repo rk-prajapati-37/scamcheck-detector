@@ -1,5 +1,5 @@
 import React from "react";
-import "./RelatedArticles.css";
+
 
 const truncate = (text, maxLength = 150) => {
   if (!text) return "";
