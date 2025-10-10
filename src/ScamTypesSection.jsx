@@ -91,7 +91,7 @@ const getExtraIconClass = (iconType) => {
 
 export default function ScamTypesSection() {
   return (
-    <section id="scam-types" className="section">
+    <section id="scam-types" className="scam-types-section">
       <div className="container">
         <div className="section-header">
           <h2 className="section-title">Common Scam Types</h2>

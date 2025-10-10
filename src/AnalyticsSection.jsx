@@ -83,10 +83,9 @@ const AnalyticsSection = () => {
   return (
     <section id="analytics" className="analytics-section analytics">
       <div className="container">
-        <h2 className="section-title">Threat Analytics Dashboard</h2>
-        <div className="section-subtitle">
-          Real-time insights into scam patterns, trends, and our protection effectiveness
-        </div>
+      
+        
+        <div class="section-header"><h2 class="section-title">Threat Analytics Dashboard</h2><p class="section-subtitle">Real-time insights into scam patterns, trends, and our protection effectiveness</p></div>
 
         {/* Dashboard Metrics */}
         <div className="metrics-grid">

@@ -7,27 +7,6 @@
 }
 
 /* ==================== SECTION HEADER ==================== */
-.section-header {
-  display: block;
-  text-align: center;
-  margin-bottom: 14px;
-}
-
-.section-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.section-subtitle {
-  font-size: 1.11rem;
-  color: #4b5563;
-  margin: 10px 0 25px 0;
-  max-width: 1200px;
-  text-align: center;
-}
 
 /* ==================== FILTER SECTION ==================== */
 .filter-section {
@@ -327,13 +306,17 @@
 
 /* ==================== READ REPORT BUTTON ==================== */
 .read-report-btn {
-  display: inline-block;
-  color: #2563eb;
-  font-weight: 600;
-  font-size: 0.88rem;
-  text-decoration: none;
-  transition: color 0.2s;
-  margin-top: 4px;
+    display: inline-block;
+    color: #2563eb;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: color 0.2s;
+    margin-top: 4px;
+    text-align: center;
+    border: 1px solid;
+    background: aliceblue;
+    border-radius: 5px;
 }
 
 .read-report-btn:hover {
@@ -372,10 +355,6 @@
 
 /* ==================== RESPONSIVE DESIGN ==================== */
 @media (max-width: 800px) {
-  /* .stories-section {
-    padding-left: 8px;
-    padding-right: 8px;
-  } */
 
   .container {
     padding-left: 8px;
@@ -387,13 +366,6 @@
     grid-template-columns: 1fr;
   }
 
-  .section-title {
-    font-size: 1.5rem;
-  }
-
-  .section-subtitle {
-    font-size: 1rem;
-  }
 
   /* ✅ Mobile filter section fixes */
   .filter-section {
@@ -461,17 +433,12 @@
   }
 
   .story-card-footer {
-    flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
 }
 
 @media (max-width: 600px) {
-  /* .stories-section {
-    padding-left: 4px;
-    padding-right: 4px;
-  } */
 
   .container {
     padding-left: 4px;
@@ -489,10 +456,6 @@
   .story-card-top {
     height: 140px;
     min-height: 140px;
-  }
-
-  .section-title {
-    font-size: 1.3rem;
   }
 
   .story-card-title {

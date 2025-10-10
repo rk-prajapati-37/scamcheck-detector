@@ -1,33 +1,12 @@
 /* ScamTypesSection.css */
 
-.section {
+.scam-types-section {
   padding: 80px 20px;
   background: #ffffff;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
-.section-header {
-  text-align: center;
-  margin-bottom: 50px;
-}
 
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #000000;
-  margin-bottom: 12px;
-}
-
-.section-subtitle {
-  font-size: 1rem;
-  color: #64748b;
-  max-width: 700px;
-  margin: 0 auto;
-}
 
 /* Scam Cards Grid */
 .scam-grid {
@@ -53,6 +32,7 @@
   text-align: center;
   cursor: pointer;
   border: 1px solid #e2e8f0;
+  justify-content: space-between;
 }
 
 .scam-card:hover {
@@ -106,42 +86,42 @@
 }
 
 /* Character Specific Colors - Pastel Backgrounds */
-.scam-character.phishing { 
+.scam-character.phishing {
   background: #fee2e2;
   color: #dc2626;
 }
 
-.scam-character.finance { 
+.scam-character.finance {
   background: #fef3c7;
   color: #f59e0b;
 }
 
-.scam-character.romance { 
+.scam-character.romance {
   background: #fce7f3;
   color: #ec4899;
 }
 
-.scam-character.schemes { 
+.scam-character.schemes {
   background: #fef3c7;
   color: #f59e0b;
 }
 
-.scam-character.medical { 
+.scam-character.medical {
   background: #dbeafe;
   color: #3b82f6;
 }
 
-.scam-character.gift { 
+.scam-character.gift {
   background: #f3e8ff;
   color: #a855f7;
 }
 
-.scam-character.arrest { 
+.scam-character.arrest {
   background: #fed7aa;
   color: #ea580c;
 }
 
-.scam-character.job { 
+.scam-character.job {
   background: #d1fae5;
   color: #10b981;
 }
@@ -229,10 +209,6 @@
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-  .section-title {
-    font-size: 2rem;
-  }
-  
   .scam-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
@@ -243,29 +219,29 @@
   .section {
     padding: 60px 16px;
   }
-  
+
   .section-title {
     font-size: 1.75rem;
   }
-  
+
   .section-subtitle {
     font-size: 0.95rem;
   }
-  
+
   .scam-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
-  
+
   .scam-card {
     padding: 20px 16px;
   }
-  
+
   .scam-illustration {
     width: 90px;
     height: 90px;
   }
-  
+
   .scam-character {
     width: 90px;
     height: 90px;
@@ -277,11 +253,11 @@
   .scam-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .section-title {
     font-size: 1.5rem;
   }
-  
+
   .section-subtitle {
     font-size: 0.9rem;
   }

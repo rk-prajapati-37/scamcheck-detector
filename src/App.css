@@ -41,6 +41,24 @@ header,
   padding: 50px 10px;
 }
 
+/* ==================== SECTION HEADER ==================== */
+.section-header {
+  display: block;
+    text-align: center;
+    margin-bottom: 40px;
+}
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 5px;
+}
+.section-subtitle {
+    font-size: 1rem;
+    color: #64748b;
+    max-width: 700px;
+    margin: 0 auto;
+}
 /* ==================== FLOATING BUTTON ==================== */
 .report-btn-float {
   display: none;
@@ -383,6 +401,16 @@ select:disabled {
 }
 
 /* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 900px) {
   .App,
   .container {
@@ -458,6 +486,11 @@ select:disabled {
 }
 
 @media (max-width: 480px) {
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+
   .report-modal {
     padding: 20px 16px;
   }
