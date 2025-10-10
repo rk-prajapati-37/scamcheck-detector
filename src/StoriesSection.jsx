@@ -206,11 +206,12 @@ export default function StoriesSection() {
             return (
               <div key={url || idx} className="story-card-wrapper">
                 <div className="story-card">
-                  <a
-                    href={url || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <div
                     className="story-card-top-link"
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => { if (url) window.open(url, '_blank', 'noopener'); }}
+                    onKeyDown={(e) => { if ((e.key === 'Enter' || e.key === ' ') && url) window.open(url, '_blank', 'noopener'); }}
                   >
                     <div className="story-card-top" style={{ background: cardBg }}>
                       <a
@@ -231,7 +232,7 @@ export default function StoriesSection() {
                         />
                       )}
                     </div>
-                  </a>
+                  </div>
                   
                   <div className="story-card-content">
                     <a

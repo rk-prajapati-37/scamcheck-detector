@@ -4,11 +4,23 @@ import './AnalyticsSection.css';
 const AnalyticsSection = () => {
   const trendsChartRef = useRef(null);
   const distributionChartRef = useRef(null);
+  const trendsChartInstance = useRef(null);
+  const distributionChartInstance = useRef(null);
 
   useEffect(() => {
     if (window.Chart && trendsChartRef.current && distributionChartRef.current) {
       setTimeout(() => {
-        new window.Chart(trendsChartRef.current, {
+        // Destroy previous instances if present
+        if (trendsChartInstance.current) {
+          try { trendsChartInstance.current.destroy(); } catch (e) { /* ignore */ }
+          trendsChartInstance.current = null;
+        }
+        if (distributionChartInstance.current) {
+          try { distributionChartInstance.current.destroy(); } catch (e) { /* ignore */ }
+          distributionChartInstance.current = null;
+        }
+
+        trendsChartInstance.current = new window.Chart(trendsChartRef.current, {
           type: 'line',
           data: {
             labels: ['Mar 1', 'Mar 5', 'Mar 10', 'Mar 15', 'Mar 20', 'Mar 25', 'Mar 30'],
@@ -47,7 +59,7 @@ const AnalyticsSection = () => {
           }
         });
 
-        new window.Chart(distributionChartRef.current, {
+        distributionChartInstance.current = new window.Chart(distributionChartRef.current, {
           type: 'doughnut',
           data: {
             labels: ['UPI/Payment', 'Job Scams', 'Investment', 'Phishing', 'Tech', 'Other'],
@@ -73,6 +85,12 @@ const AnalyticsSection = () => {
         });
       }, 400);
     }
+    
+    return () => {
+      // cleanup
+      try { if (trendsChartInstance.current) trendsChartInstance.current.destroy(); } catch (e) {}
+      try { if (distributionChartInstance.current) distributionChartInstance.current.destroy(); } catch (e) {}
+    };
   }, []);
 
   // **Function yahan define karo, return se pehle!**
@@ -83,9 +101,10 @@ const AnalyticsSection = () => {
   return (
     <section id="analytics" className="analytics-section analytics">
       <div className="container">
-      
-        
-        <div class="section-header"><h2 class="section-title">Threat Analytics Dashboard</h2><p class="section-subtitle">Real-time insights into scam patterns, trends, and our protection effectiveness</p></div>
+        <div className="section-header">
+          <h2 className="section-title">Threat Analytics Dashboard</h2>
+          <p className="section-subtitle">Real-time insights into scam patterns, trends, and our protection effectiveness</p>
+        </div>
 
         {/* Dashboard Metrics */}
         <div className="metrics-grid">

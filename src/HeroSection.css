@@ -352,3 +352,26 @@ display: inline-block;
     font-size: 1rem;
   }
 }
+
+/* Suggestion chips */
+.suggestions-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.suggestion-chips {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.suggestion-chip {
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  color: #3730a3;
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.suggestion-chip:hover { background: #e0e7ff; }

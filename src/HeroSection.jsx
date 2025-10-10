@@ -2,15 +2,30 @@ import React, { useState } from "react";
 import RelatedArticles from "./RelatedArticles";
 import "./HeroSection.css";
 
-const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg }) => {
+const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg, suggestedKeywords = [] }) => {
   const [query, setQuery] = useState("");
-  const example = "Earn 5x profit in 7 days! 🚀 Invest just ₹500 today on Global Index. 100% guaranteed returns. Register now 👉 h5.globalindex.cc";
+  const [suggestions, setSuggestions] = useState([]);
+  const example = "How Scammers Target Flipkart Customers Through WhatsApp Screen Share";
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!query.trim()) return;
     onAnalyze(query.trim());
     setQuery("");
+  };
+
+  // update suggestions when props change
+  React.useEffect(() => {
+    if (Array.isArray(suggestedKeywords) && suggestedKeywords.length > 0) {
+      setSuggestions(suggestedKeywords);
+    } else {
+      setSuggestions([]);
+    }
+  }, [suggestedKeywords]);
+
+  const handleSuggestionClick = (text) => {
+    setQuery(text);
+    onAnalyze(text);
   };
 
   const handleExampleClick = () => setQuery(example);
@@ -55,6 +70,24 @@ const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg }) =
                 required
                 aria-label="Suspicious content input"
               />
+              {/* Suggested keywords (if any) */}
+              {Array.isArray(suggestions) && suggestions.length > 0 && (
+                <div className="suggestions-row" style={{ marginTop: '8px' }}>
+                  <small>Tip: try these keywords:</small>
+                  <div className="suggestion-chips">
+                    {suggestions.map((s, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        className="suggestion-chip"
+                        onClick={() => handleSuggestionClick(s)}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div className="hero-actions" style={{ marginTop: "10px" }}>
                 <button
                   type="submit"

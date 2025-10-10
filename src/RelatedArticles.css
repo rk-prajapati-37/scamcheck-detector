@@ -50,7 +50,7 @@
 }
 
 /* Story Card Styling */
-.story-card {
+.rk-story-card {
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 16px;
@@ -63,7 +63,7 @@
   width: 100%;
 }
 
-.story-card:hover {
+.rk-story-card:hover {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
   transform: translateY(-6px);
   border-color: #d1d5db;
@@ -96,7 +96,7 @@
   transition: opacity 0.3s ease;
 }
 
-.story-card:hover .card-thumb-wrapper::before {
+.rk-story-card:hover .card-thumb-wrapper::before {
   opacity: 1;
 }
 
@@ -107,7 +107,7 @@
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.story-card:hover .card-thumb {
+.rk-story-card:hover .card-thumb {
   transform: scale(1.08);
 }
 
@@ -147,7 +147,7 @@
   background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
 }
 
-.story-card:hover .category-badge {
+.rk-story-card:hover .category-badge {
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
 }
@@ -232,7 +232,7 @@
 }
 
 /* Empty Card Placeholder */
-.story-card-placeholder {
+.rk-story-card-placeholder {
   background: transparent;
   border: 2px dashed #e5e7eb;
   border-radius: 16px;
@@ -291,7 +291,7 @@
 }
 
 /* Skeleton Loading States */
-.story-card.skeleton {
+.rk-story-card.skeleton {
   background: #f9fafb;
   pointer-events: none;
   animation: pulse 1.5s ease-in-out infinite;
@@ -373,7 +373,7 @@
     padding: 24px;
   }
 
-  .story-card-placeholder {
+  .rk-story-card-placeholder {
     display: none;
   }
 
@@ -488,7 +488,7 @@
     page-break-inside: avoid;
   }
 
-  .story-card {
+  .rk-story-card{
     box-shadow: none;
     border: 1px solid #000;
     page-break-inside: avoid;

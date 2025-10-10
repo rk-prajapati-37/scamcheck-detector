@@ -26,7 +26,7 @@ function App() {
 
     try {
       // ✅ This function now handles everything: keyword extraction, retry logic, saving to sheet
-      const res = await searchBoomLiveContent(query);
+  const res = await searchBoomLiveContent(query);
       console.log('📦 [App.handleAnalyze] Result:', res);
 
       // ✅ Set UI message if no results
@@ -40,6 +40,22 @@ function App() {
       }
 
       setResult(res);
+
+      // If initial response returned suggested keywords but no articles, try an automatic follow-up
+      if (!res.found && res.suggestedKeywords && res.suggestedKeywords.length > 0) {
+        const ks = res.suggestedKeywords.join(' ');
+        console.log('🔁 App: performing automatic follow-up search with suggested keywords:', ks);
+        try {
+          const follow = await searchBoomLiveContent(ks, { skipSave: true });
+          console.log('📦 [App.followUp] Result:', follow);
+          // If follow-up found articles or answer, update the result shown to user
+          if (follow && (follow.found || (follow.articles && follow.articles.length > 0))) {
+            setResult((prev) => ({ ...prev, ...follow }));
+          }
+        } catch (e) {
+          console.warn('⚠️ Follow-up search failed:', e);
+        }
+      }
 
     } catch (error) {
       console.error("❌ [App.handleAnalyze] Error:", error);
@@ -80,6 +96,7 @@ function App() {
             : null
         }
         articles={result && result.articles ? result.articles : []}
+        suggestedKeywords={result && result.suggestedKeywords ? result.suggestedKeywords : []}
         loading={loading}
         noAnswerMsg={noAnswerMsg}
       />

@@ -16,7 +16,7 @@ const RelatedArticles = ({ articles, loading, noAnswerMsg }) => {
         </div>
         <div className="stories-grid-single">
           {[1, 2, 3, 4].map((i) => (
-            <div className="story-card skeleton" key={i}>
+            <div className="rk-story-card skeleton" key={i}>
               <div className="skeleton-thumb">
                 <div className="skeleton-shimmer"></div>
               </div>
@@ -70,7 +70,7 @@ const RelatedArticles = ({ articles, loading, noAnswerMsg }) => {
           const isValidUrl = article.url && article.url !== "#";
 
           return (
-            <div key={index} className="story-card">
+            <div key={index} className="rk-story-card">
               {/* Image Section */}
               <div className="card-thumb-wrapper">
                 {isValidUrl ? (
