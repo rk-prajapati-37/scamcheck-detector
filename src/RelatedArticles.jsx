@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./RelatedArticles.css";
 
 const truncate = (text, maxLength = 150) => {
   if (!text) return "";
@@ -11,11 +11,11 @@ const RelatedArticles = ({ articles, loading, noAnswerMsg }) => {
     return (
       <section className="scam-alert-section">
         <div className="alert-header">
-          <span className="alert-icons">⚠️ </span>
+          <span className="alert-icons">⚠️</span>
           <h2 className="alert-title">Scam Alert - Related Stories Found</h2>
         </div>
-        <div className="stories-grid-two">
-          {[1, 2].map((i) => (
+        <div className="stories-grid-single">
+          {[1, 2, 3, 4].map((i) => (
             <div className="story-card skeleton" key={i}>
               <div className="skeleton-thumb">
                 <div className="skeleton-shimmer"></div>
@@ -55,7 +55,8 @@ const RelatedArticles = ({ articles, loading, noAnswerMsg }) => {
     return null;
   }
 
-  const displayArticles = articles.slice(0, 2);
+  // Show minimum 4 articles, or all if more than 4
+  const displayArticles = articles.slice(0, Math.max(articles.length, 4));
 
   return (
     <section className="scam-alert-section">
@@ -64,13 +65,13 @@ const RelatedArticles = ({ articles, loading, noAnswerMsg }) => {
         <h2 className="alert-title">Scam Alert - Related Stories Found</h2>
       </div>
 
-      <div className="stories-grid-two">
+      <div className="stories-grid-single">
         {displayArticles.map((article, index) => {
           const isValidUrl = article.url && article.url !== "#";
 
           return (
             <div key={index} className="story-card">
-              {/* Image Section - No Badge */}
+              {/* Image Section */}
               <div className="card-thumb-wrapper">
                 {isValidUrl ? (
                   <a href={article.url} target="_blank" rel="noopener noreferrer">
@@ -121,11 +122,6 @@ const RelatedArticles = ({ articles, loading, noAnswerMsg }) => {
             </div>
           );
         })}
-        
-        {/* Empty placeholder if only 1 article */}
-        {displayArticles.length === 1 && (
-          <div className="story-card-placeholder"></div>
-        )}
       </div>
     </section>
   );
