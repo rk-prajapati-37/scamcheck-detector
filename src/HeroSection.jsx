@@ -4,7 +4,7 @@ import "./HeroSection.css";
 
 const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg }) => {
   const [query, setQuery] = useState("");
-  const example = "Earn 5x profit in 7 days! 🚀 Invest just ₹500 today on Global Index. 100% guaranteed returns. Register now 👉 h5.globalindex.cc";
+  const example = "Can Scammers Steal Money When You Check Your UPI Balance? Here’s What Experts Say";
 
   const handleSubmit = (e) => {
     e.preventDefault();
