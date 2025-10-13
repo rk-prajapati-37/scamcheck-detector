@@ -251,12 +251,19 @@ export default function StoriesSection() {
                         <span className="footer-icon">👤</span>
                         <span className="footer-label">{authorName}</span>
                       </div>
-                      {formattedDate && (
-                        <span className="footer-date">📅 {formattedDate}</span>
-                      )}
+                          {url && (
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="read-report-btn"
+                      >
+                        Read More →
+                      </a>
+                    )}
                     </div>
                     
-                    {url && (
+                    {/* {url && (
                       <a
                         href={url}
                         target="_blank"
@@ -265,7 +272,7 @@ export default function StoriesSection() {
                       >
                         Read Full Report →
                       </a>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>
@@ -274,13 +281,13 @@ export default function StoriesSection() {
         </div>
 
         {hasMore && !loading &&
-          <div style={{ textAlign: "center", marginTop: 32 }}>
+          <div style={{ textAlign: "left", marginTop: 32 }}>
             <button className="btn btn-secondary" onClick={() => fetchStories(false)}>
               <i className="fas fa-plus"></i> Load More Stories
             </button>
           </div>
         }
-        {loading && <div style={{ textAlign: "center", marginTop: 22 }}>Loading...</div>}
+        {loading && <div style={{ textAlign: "left", marginTop: 22 }}>Loading...</div>}
       </div>
     </section>
   );

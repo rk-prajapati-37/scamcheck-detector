@@ -53,6 +53,7 @@
 .scam-question .highlight {
   font-weight: 700;
   color: #dc2626;
+  text-transform: capitalize;
 }
 
 /* Illustration Container */
@@ -220,9 +221,6 @@
     padding: 60px 16px;
   }
 
-  .section-title {
-    font-size: 1.75rem;
-  }
 
   .section-subtitle {
     font-size: 0.95rem;
@@ -254,9 +252,7 @@
     grid-template-columns: 1fr;
   }
 
-  .section-title {
-    font-size: 1.5rem;
-  }
+
 
   .section-subtitle {
     font-size: 0.9rem;

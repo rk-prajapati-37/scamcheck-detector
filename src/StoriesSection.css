@@ -314,8 +314,8 @@
     transition: color 0.2s;
     margin-top: 4px;
     text-align: center;
-    border: 1px solid;
-    background: aliceblue;
+    /* border: 1px solid;
+    background: aliceblue; */
     border-radius: 5px;
 }
 
@@ -329,6 +329,7 @@
 
 /* ==================== LOAD MORE BUTTON ==================== */
 .btn.btn-secondary {
+  width: 25%;
     border-radius: 10px;
     background: #eff6ff;
     color: #1e40af;
@@ -436,6 +437,7 @@
     align-items: flex-start;
     gap: 8px;
   }
+  .btn.btn-secondary{ width: 100%; margin: 0 auto;}
 }
 
 @media (max-width: 600px) {

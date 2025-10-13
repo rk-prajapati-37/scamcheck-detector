@@ -93,11 +93,14 @@ const ReportScamModal = ({ onClose }) => {
                 <label className="form-label" htmlFor="scamType">Scam Type *</label>
                 <select className="form-input" name="scamType" id="scamType" required disabled={isSubmitting}>
                   <option value="">Select scam type</option>
-                  <option value="phishing">Phishing / Email Scam</option>
-                  <option value="financial">Financial / UPI Fraud</option>
-                  <option value="social">Social Engineering</option>
-                  <option value="tech">Tech Support Scam</option>
-                  <option value="investment">Investment Fraud</option>
+                  <option value="Phishing_Scam">Phishing Scam </option>
+                  <option value="Finance_Scam">Finance Scam </option>
+                  <option value="Romance_Scam">Romance Scam</option>
+                  <option value="Schemes_Scam">Schemes Scam </option>
+                  <option value="Medical_Scam">Medical Scam </option>
+                  <option value="Gift_Scam">Gift Scam </option>
+                  <option value="Digital_Arrest">Digital Arrest </option>
+                  <option value="Job_Scam">Job Scam </option>
                   <option value="other">Other</option>
                 </select>
               </div>

@@ -101,13 +101,13 @@ const AnalyticsSection = () => {
   return (
     <section id="analytics" className="analytics-section analytics">
       <div className="container">
-        <div className="section-header">
+        {/* <div className="section-header">
           <h2 className="section-title">Threat Analytics Dashboard</h2>
           <p className="section-subtitle">Real-time insights into scam patterns, trends, and our protection effectiveness</p>
-        </div>
+        </div> */}
 
         {/* Dashboard Metrics */}
-        <div className="metrics-grid">
+        {/* <div className="metrics-grid">
           <div className="metric-card">
             <div className="metric-value danger">1,247</div>
             <div className="metric-label">Active Threats</div>
@@ -128,7 +128,7 @@ const AnalyticsSection = () => {
             <div className="metric-label">Current Risk Level</div>
             <div className="metric-change up">+0.2 from last week</div>
           </div>
-        </div>
+        </div> */}
 
         {/* Charts Section */}
         <div className="charts-container">
