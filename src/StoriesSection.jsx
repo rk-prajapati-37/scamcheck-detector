@@ -281,7 +281,7 @@ export default function StoriesSection() {
         </div>
 
         {hasMore && !loading &&
-          <div style={{ textAlign: "left", marginTop: 32 }}>
+          <div style={{ textAlign: "center", marginTop: 32 }}>
             <button className="btn btn-secondary" onClick={() => fetchStories(false)}>
               <i className="fas fa-plus"></i> Load More Stories
             </button>
