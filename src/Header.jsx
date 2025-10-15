@@ -8,9 +8,11 @@ const Header = ({ openReportModal }) => {
 
   return (
     <nav className="site-navbar">
+      <a href="https://scamcheck.boomlive.in/" className="scamcheck-link">
       <div className="site-logo">
         <i className="fas fa-shield-alt" /> ScamCheck
       </div>
+      </a>
 
       {/* Right side: Menu + Button */}
       <div className="nav-right">

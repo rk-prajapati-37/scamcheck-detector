@@ -14,7 +14,10 @@
   box-sizing: border-box;
   max-width: 100vw;
 }
-
+a.scamcheck-link{
+  text-decoration: none;
+  color: inherit; 
+}
 /* ==================== LOGO - LEFT SIDE ==================== */
 .site-logo {
   font-size: 1.4rem;

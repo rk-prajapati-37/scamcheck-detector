@@ -38,7 +38,7 @@ header,
 .analytics-section,
 .stories-section,
 .scam-types-section {
-  padding: 50px 10px;
+  padding: 10px 10px 35px 10px;
 }
 
 /* ==================== SECTION HEADER ==================== */
@@ -52,6 +52,7 @@ header,
     font-weight: 700;
     color: #000000;
     margin-bottom: 5px;
+    margin-top: 0;
 }
 .section-subtitle {
     font-size: 1rem;

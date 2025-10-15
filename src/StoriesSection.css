@@ -181,8 +181,8 @@
 }
 
 .story-card-top {
-  min-height: 160px;
-  height: 160px;
+min-height: 160px;
+    height: 160px;
   border-radius: 16px 16px 0 0;
   position: relative;
   display: flex;
@@ -456,8 +456,8 @@
   }
 
   .story-card-top {
-    height: 140px;
-    min-height: 140px;
+    height: 213px;
+    min-height: 213px;
   }
 
   .story-card-title {
