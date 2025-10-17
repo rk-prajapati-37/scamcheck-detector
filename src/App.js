@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import HeroSection from "./HeroSection";
-import AnalyticsSection from "./AnalyticsSection";
+// import AnalyticsSection from "./AnalyticsSection";
 import StoriesSection from "./StoriesSection";
 import ReportScamModal from "./ReportScamModal";
 import ScamTypesSection from "./ScamTypesSection";
+import Footer from "./Footer";
 import { searchBoomLiveContent } from "./boomLiveAPI"; // ✅ Import updated function
 import "./App.css";
 
@@ -108,6 +109,7 @@ function App() {
       
       <StoriesSection />
       <ScamTypesSection />
+      <Footer />
       
       <button
         className="report-btn-float"
