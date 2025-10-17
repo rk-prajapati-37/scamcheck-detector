@@ -101,10 +101,10 @@ function App() {
         noAnswerMsg={noAnswerMsg}
       />
       
-      <AnalyticsSection
+      {/* <AnalyticsSection
         data={result && result.analytics ? result.analytics : []}
         loading={loading}
-      />
+      /> */}
       
       <StoriesSection />
       <ScamTypesSection />

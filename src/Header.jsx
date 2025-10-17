@@ -28,7 +28,7 @@ const Header = ({ openReportModal }) => {
 
         <ul className={`site-menu${menuOpen ? " open" : ""}`}>
           <li><a href="#home" className="active" onClick={handleMenuLinkClick}>Home</a></li>
-          <li><a href="#analytics" onClick={handleMenuLinkClick}>Analytics</a></li>
+          {/* <li><a href="#analytics" onClick={handleMenuLinkClick}>Analytics</a></li> */}
           <li><a href="#stories" onClick={handleMenuLinkClick}>Stories</a></li>
           <li><a href="#scam-types" onClick={handleMenuLinkClick}>Scam Types</a></li>
         </ul>

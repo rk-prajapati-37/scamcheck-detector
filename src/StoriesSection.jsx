@@ -129,7 +129,7 @@ export default function StoriesSection() {
     <section id="stories" className="stories-section stories">
       <div className="container">
         <div className="section-header">
-          <h2 className="section-title">Fact-Checked Stories</h2>
+          <h2 className="section-title">Investigations</h2>
           <p className="section-subtitle">Real cases where our AI helped prevent scams and verify threats</p>
         </div>
         
