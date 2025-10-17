@@ -5,7 +5,7 @@ import "./HeroSection.css";
 const HeroSection = ({ onAnalyze, alertData, articles, loading, noAnswerMsg, suggestedKeywords = [] }) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const example = "How Scammers Target Flipkart Customers Through WhatsApp Screen Share";
+  const example = "Your parcel delivery has been attempted for the 2nd time please confirm your details or your item will be returned: https://indiapots.com/in";
 
   const handleSubmit = (e) => {
     e.preventDefault();
