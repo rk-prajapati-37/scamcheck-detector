@@ -1,21 +1,39 @@
 import React, { useState } from "react";
-import WebsiteCheckReport from "./WebsiteCheckReport";
 import "./WebsiteCheckSection.css";
+
+function getRiskColor(level) {
+  switch (level) {
+    case "SAFE":
+      return "#29c15c";
+    case "LOW":
+      return "#f7d41a";
+    case "MEDIUM":
+      return "#ffb624";
+    case "HIGH":
+      return "#e94825";
+    case "CRITICAL":
+      return "#08b3bb";
+    default:
+      return "#bdbdbd";
+  }
+}
 
 const WebsiteCheckSection = () => {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
+  const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    setResult(null);
-    if (!url) {
-      setError("Please enter a website URL.");
+    setPrediction(null);
+
+    if (!url.trim()) {
+      setError("Please enter a valid URL.");
       return;
     }
+
     setLoading(true);
     try {
       const res = await fetch(
@@ -27,147 +45,122 @@ const WebsiteCheckSection = () => {
         }
       );
       const data = await res.json();
-      if (data && data.prediction) {
-        setResult(data.prediction);
+      if (data?.prediction) {
+        setPrediction(data.prediction);
       } else {
-        setError("Could not check the website. Try again!");
+        setError("No prediction returned. Please try another URL.");
       }
-    } catch {
-      setError("API error. Please retry.");
+    } catch (err) {
+      setError("API call failed. Please try again later.");
     }
     setLoading(false);
   };
 
   return (
-    <section
-      className="website-check-section"
-      style={{
-        background: "#fff",
-        padding: "3rem 1rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <h1
-        style={{
-          fontWeight: "bold",
-          fontSize: "3rem",
-          textAlign: "center",
-          margin: 0,
-          color: "#000",
-          letterSpacing: "-1px",
-        }}
-      >
-        Check a website:
-      </h1>
-      <p
-        style={{
-          margin: "1rem 0 2rem",
-          textAlign: "center",
-          fontSize: "1.3rem",
-          color: "#000",
-        }}
-      >
-        Check if a website or link is a scam, phishing or legit…
-      </p>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: "2rem",
-          maxWidth: 500,
-          width: "100%",
-        }}
-      >
+    <section className="website-check-section">
+      <h1>Check a website:</h1>
+      <p>Check if a website or link is a scam, phishing or legit…</p>
+
+      <form onSubmit={handleSubmit} className="check-form">
         <input
           type="text"
-          placeholder="www.boomlive.in"
+          placeholder="Enter website or URL here"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          style={{
-            flex: 1,
-            padding: "1rem",
-            fontSize: "1.1rem",
-            borderRadius: "30px 0 0 30px",
-            border: "2px solid #2563eb",
-            borderRight: "none",
-            outline: "none",
-            background: "#fff",
-          }}
-        />
-        <button
-          type="submit"
           disabled={loading}
-          style={{
-            background: "#2563eb",
-            color: "#fff",
-            border: "none",
-            borderRadius: "0 30px 30px 0",
-            padding: "12px 1.5rem",
-            fontSize: "1.5rem",
-            cursor: "pointer",
-          }}
-        >
-          ➔
+          className="url-input"
+        />
+        <button type="submit" disabled={loading} className="submit-btn">
+          Scan Website
         </button>
       </form>
-      <div
-        style={{
-          display: "flex",
-          gap: "1rem",
-          marginBottom: "3rem",
-          flexWrap: "wrap",
-        }}
-      >
-        {/* <button
-          style={{
-            background: "#2563eb",
-            color: "#fff",
-            borderRadius: "10px",
-            border: "none",
-            padding: "10px 20px",
-            fontSize: "1.17rem",
-            fontWeight: 700,
-            cursor: "pointer",
-            transition: "background 0.19s",
-            display: "flex",
-            alignItems: "center",
-            gap: "11px",
-            justifyContent: "center",
-          }}
-        >
-          About this service
-        </button>
-        <button
-          style={{
-                border: "2px solid #2563eb",
-    background: "#fff",
-    color: "#2563eb",
-    borderRadius: "10px",
-    padding: "10px 20px",
-    fontSize: "1.17rem",
-    fontWeight: 700,
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    gap: "9px",
-    justifyContent: "center",
-          }}
-        >
-          Disclaimer
-        </button> */}
-      </div>
-      {loading && (
-        <p style={{ color: "#2563eb", fontWeight: "bold" }}>Checking URL...</p>
+
+      {loading && <p className="loading-text">Analyzing URL...</p>}
+      {error && <p className="error-text">{error}</p>}
+
+      {prediction && (
+        <div className="result-card">
+          <h2>Report Summary</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td>Risk Level:</td>
+                <td>
+                  <span
+                    className="badge"
+                    style={{ backgroundColor: getRiskColor(prediction.RISK_LEVEL) }}
+                  >
+                    {prediction.RISK_LEVEL}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>Score (higher = more dangerous):</td>
+                <td>
+                  <span
+                    className={`score-badge ${
+                      prediction.SCORE >= 80
+                        ? "score-critical"
+                        : prediction.SCORE >= 60
+                        ? "score-high"
+                        : prediction.SCORE >= 40
+                        ? "score-medium"
+                        : "score-safe"
+                    }`}
+                  >
+                    {prediction.SCORE} / 100
+                  </span>
+                  <span className="score-text">
+                    {prediction.SCORE >= 80
+                      ? "Critical"
+                      : prediction.SCORE >= 60
+                      ? "High"
+                      : prediction.SCORE >= 40
+                      ? "Medium"
+                      : "Low / Safe"}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>Confidence:</td>
+                <td>{prediction.CONFIDENCE} %</td>
+              </tr>
+              <tr>
+                <td>Checks Completed:</td>
+                <td>{prediction.checks_completed}</td>
+              </tr>
+              <tr>
+                <td>HTTPS:</td>
+                <td>{prediction.isHTTPS ? "Yes" : "No"}</td>
+              </tr>
+              <tr>
+                <td>SSL Certificate:</td>
+                <td>{prediction.hasSSLCertificate ? "Yes" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Google Safe:</td>
+                <td>{prediction.GoogleSafePassed ? "Yes" : "No"}</td>
+              </tr>
+              <tr>
+                <td>VirusTotal Detections:</td>
+                <td>{prediction.VirusTotalDetections}</td>
+              </tr>
+              <tr>
+                <td>Temporary Domain:</td>
+                <td>{prediction.isTemporaryDomain ? "Yes" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Malicious Extension:</td>
+                <td>{prediction.hasMaliciousExtension ? "Yes" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Direct IP:</td>
+                <td>{prediction.isDirectIP ? "Yes" : "No"}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       )}
-      {error && (
-        <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>
-      )}
-      {/* FINAL: output just one report component */}
-      {result && <WebsiteCheckReport prediction={result} />}
     </section>
   );
 };
