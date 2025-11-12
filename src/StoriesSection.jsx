@@ -202,6 +202,7 @@ export default function StoriesSection() {
             // const formattedDate = formatDate(d.publishDate || d.createdDate || d.date_news || d.date_created);
             const categoryUrl = `https://www.boomlive.in/tags/${categoryInfo.slug}`;
             const authorName = d.authorName || d.source || "BoomLive Team";
+            const formattedDate = formatDate(d.publishDate || d.createdDate || d.date_news || d.date_created);
 
             return (
               <div key={url || idx} className="story-card-wrapper">
@@ -250,6 +251,9 @@ export default function StoriesSection() {
                       <div className="footer-left">
                         <span className="footer-icon">👤</span>
                         <span className="footer-label">{authorName}</span>
+                        {formattedDate && (
+                          <span className="footer-date"> • {formattedDate}</span>
+                        )}
                       </div>
                           {url && (
                       <a

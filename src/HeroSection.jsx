@@ -13,19 +13,13 @@ const HeroSection = ({
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [urlResult, setUrlResult] = useState(null);
-  const [urlLoading, setUrlLoading] = useState(false);
   const [urlError, setUrlError] = useState(null);
-  const [lastHadURL, setLastHadURL] = useState(false);
+  const [urlLoading, setUrlLoading] = useState(false);
   const [lastHadText, setLastHadText] = useState(false);
   const example =
     "Your parcel delivery has been attempted for the 2nd time please confirm your details or your item will be returned: https://indiapots.com/in";
 
-  // Extract URL from text
-  const extractURL = (str) => {
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const matches = str.match(urlRegex);
-    return matches ? matches[0] : null;
-  };
+  // (Keep helper if needed later) - removed unused extractURL to satisfy lint
   const extractURLIfOnlyURL = (str) => {
     const trimmed = str.trim();
     const urlRegex = /^https?:\/\/[^\s]+$/i; // start to end pura URL hona chahiye
@@ -96,8 +90,7 @@ const HeroSection = ({
     const hasURL = !!url;
     const hasText = !hasURL; // Agar URL hai toh text consider nahi karenge
 
-    setLastHadURL(hasURL);
-    setLastHadText(hasText);
+  setLastHadText(hasText);
 
     setUrlResult(null);
     setUrlError(null);
@@ -290,7 +283,7 @@ const HeroSection = ({
             )}
 
             {/* ✅ URL Safety Result - Only show if URL exists in query and after main loading finishes */}
-            {urlResult && !loading && (
+            {urlResult && !loading && !urlLoading && (
               <div className="url-safety-result">
                 <div className="url-result-header">
                   <div
@@ -373,7 +366,7 @@ const HeroSection = ({
               </div>
             )} */}
             {/* Scam Alert - Related Stories */}
-            {!loading && articles && articles.length > 0 && lastHadText && (
+            {/* {!loading && articles && articles.length > 0 && lastHadText && (
               <div className="scam-alert-box">
                 <div className="scam-alert-header">
                   <span className="scam-alert-icon">🚨</span>
@@ -382,7 +375,7 @@ const HeroSection = ({
                   </h4>
                 </div>
               </div>
-            )}
+            )} */}
             {/* ✅ No Answer Message - Fixed HTML Rendering */}
             {!loading && noAnswerMsg && (
               <div
