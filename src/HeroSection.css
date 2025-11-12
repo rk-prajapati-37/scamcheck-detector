@@ -109,6 +109,16 @@ display: inline-block;
   margin-top: 7px;
   text-align: center;
 }
+.hero-example-link {
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+.hero-example-link:hover { background: #eaf2ff; }
 .hero-input {
     width: 95%;
     background: #fefefe;
@@ -375,3 +385,172 @@ display: inline-block;
   font-size: 0.9rem;
 }
 .suggestion-chip:hover { background: #e0e7ff; }
+
+/* ==================== URL SAFETY RESULT ==================== */
+.url-safety-result {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.url-result-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.url-risk-badge {
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.url-result-score {
+  font-size: 14px;
+  color: #374151;
+}
+
+.url-result-score strong {
+  font-size: 18px;
+  color: #111827;
+  font-weight: 700;
+}
+
+.url-result-details {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 12px;
+}
+
+.url-result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 13px;
+  color: #374151;
+}
+
+.url-result-label {
+  font-weight: 600;
+}
+
+.url-result-value {
+  color: #111827;
+  font-weight: 600;
+}
+
+.url-result-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.url-flag {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.url-flag.safe {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.url-flag.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.url-flag.danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.url-error-box {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 14px;
+  border-left: 4px solid #dc2626;
+  font-size: 13px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ==================== SCAM ALERT BOX ==================== */
+.scam-alert-box {
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.scam-alert-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.scam-alert-icon {
+  font-size: 24px;
+}
+
+.scam-alert-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #991b1b;
+}
+
+@media (max-width: 768px) {
+  .url-safety-result {
+    padding: 12px;
+  }
+
+  .url-result-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .url-result-flags {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .url-flag {
+    width: 100%;
+    text-align: center;
+  }
+
+  .scam-alert-box {
+    padding: 12px;
+  }
+
+  .scam-alert-icon {
+    font-size: 20px;
+  }
+
+  .scam-alert-title {
+    font-size: 14px;
+  }
+}
