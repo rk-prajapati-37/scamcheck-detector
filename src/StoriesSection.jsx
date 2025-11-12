@@ -199,7 +199,7 @@ export default function StoriesSection() {
             const categoryInfo = CATEGORY_MAP[cat] || CATEGORY_MAP.scam;
             const cardBg = categoryObj ? categoryObj.bg : "#f2f2f8";
             const url = story.url || d.url;
-            const formattedDate = formatDate(d.publishDate || d.createdDate || d.date_news || d.date_created);
+            // const formattedDate = formatDate(d.publishDate || d.createdDate || d.date_news || d.date_created);
             const categoryUrl = `https://www.boomlive.in/tags/${categoryInfo.slug}`;
             const authorName = d.authorName || d.source || "BoomLive Team";
 
