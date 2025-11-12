@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Header from "./Header";
 import HeroSection from "./HeroSection";
 // import AnalyticsSection from "./AnalyticsSection";
+import WebsiteCheckSection from "./WebsiteCheckSection";
+
 import StoriesSection from "./StoriesSection";
 import ReportScamModal from "./ReportScamModal";
 import ScamTypesSection from "./ScamTypesSection";
@@ -106,7 +108,8 @@ function App() {
         data={result && result.analytics ? result.analytics : []}
         loading={loading}
       /> */}
-      
+      <WebsiteCheckSection />
+
       <StoriesSection />
       <ScamTypesSection />
       <Footer />

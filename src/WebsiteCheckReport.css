@@ -1,0 +1,71 @@
+.website-report-container {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 30px 22px 28px 22px;
+  max-width: 750px;
+  width: 100%;
+  margin: 32px auto;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.09);
+  box-sizing: border-box;
+}
+
+.website-report-heading {
+  color: #08b3bb;
+  font-size: 1.23rem;
+  text-align: center;
+  background: #e0f7fa;
+  border: 1px solid #b2ebf2;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 22px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.website-report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+.website-report-table td {
+  padding: 10px 6px;
+  border-bottom: 1px solid #f3f6f9;
+}
+
+.website-report-label {
+  font-weight: 600;
+  color: #374151;
+  min-width: 120px;
+}
+
+.website-report-value {
+  font-weight: 500;
+  color: #232249;
+}
+
+.website-report-badge {
+  display: inline-block;
+  border-radius: 14px;
+  padding: 6px 18px;
+  font-weight: bold;
+  color: #fff;
+  font-size: 1.06rem;
+  box-shadow: 0 1px 6px #0001;
+  margin-right: 10px;
+}
+
+/* Score colors */
+.badge-critical { background: #e94825; }
+.badge-high { background: #ffb624; color: #232249; }
+.badge-medium { background: #f7d41a; color: #232249; }
+.badge-safe { background: #29c15c; }
+
+.website-report-comment {
+  color: #444;
+  font-size: 0.96rem;
+  margin-left: 6px;
+  font-weight: 600;
+}
