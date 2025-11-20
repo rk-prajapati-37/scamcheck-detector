@@ -22,8 +22,17 @@ const HeroSection = ({
   // (Keep helper if needed later) - removed unused extractURL to satisfy lint
   const extractURLIfOnlyURL = (str) => {
     const trimmed = str.trim();
-    const urlRegex = /^https?:\/\/[^\s]+$/i; // start to end pura URL hona chahiye
+    // Match: https://... OR http://... OR bare domain (domain.com, boom.in, etc)
+    const urlRegex = /^(https?:\/\/[^\s]+|[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*(\.[a-zA-Z]{2,}))(:[0-9]+)?(\/[^\s]*)?$/i;
     return urlRegex.test(trimmed) ? trimmed : null;
+  };
+
+  // Add https:// prefix if URL doesn't have protocol
+  const normalizeURL = (url) => {
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      return `https://${url}`;
+    }
+    return url;
   };
 
   // Get risk level badge color based on SCORE (new API uses score-based classification)
@@ -111,6 +120,9 @@ const HeroSection = ({
     setUrlResult(null);
 
     try {
+      // Normalize URL: add https:// if no protocol specified
+      const normalizedUrl = normalizeURL(url);
+
       const response = await fetch(
         "https://qs0ks48sscgg0gs4wk4k08g0.vps.boomlive.in/predict",
         {
@@ -118,7 +130,7 @@ const HeroSection = ({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ url }),
+          body: JSON.stringify({ url: normalizedUrl }),
         }
       );
 
