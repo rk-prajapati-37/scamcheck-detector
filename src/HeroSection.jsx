@@ -112,13 +112,16 @@ const HeroSection = ({
     setUrlError(null);
 
     if (hasURL) {
+      // Clear suggestions when URL is detected
+      setSuggestions([]);
       await analyzeURL(url);
+      // Clear query after URL analysis completes
+      setQuery("");
       // Do NOT call onAnalyze when URL is present — keep UI focused on website report only
     } else {
       await onAnalyze(query.trim());
+      setQuery("");
     }
-
-    setQuery("");
   };
 
   const analyzeURL = async (url) => {
@@ -316,6 +319,19 @@ const HeroSection = ({
                   <div className="shimmer-line short"></div>
                 </div>
                 <div className="loading-text">Analyzing with AI...</div>
+              </div>
+            )}
+
+            {/* ✅ URL Loading Animation */}
+            {urlLoading && (
+              <div className="loading-card">
+                <div className="loading-shimmer">
+                  <div className="shimmer-line title"></div>
+                  <div className="shimmer-line"></div>
+                  <div className="shimmer-line"></div>
+                  <div className="shimmer-line short"></div>
+                </div>
+                <div className="loading-text">Analyzing website...</div>
               </div>
             )}
 
