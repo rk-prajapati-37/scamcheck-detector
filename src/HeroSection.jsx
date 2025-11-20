@@ -251,8 +251,8 @@ const HeroSection = ({
                 <button
                   type="submit"
                   className="hero-analyze-btn"
-                  disabled={loading || !query.trim()}
-                  aria-disabled={loading || !query.trim()}
+                  disabled={loading || urlLoading || !query.trim()}
+                  aria-disabled={loading || urlLoading || !query.trim()}
                   aria-label="Search"
                 >
                   <i className="fas fa-search" aria-hidden="true"></i> Search
@@ -261,7 +261,7 @@ const HeroSection = ({
                   type="button"
                   className="hero-clear-btn"
                   onClick={() => setQuery("")}
-                  disabled={loading}
+                  disabled={loading || urlLoading}
                   aria-label="Clear input"
                   style={{ marginLeft: "8px" }}
                 >
@@ -280,6 +280,19 @@ const HeroSection = ({
                   <div className="shimmer-line short"></div>
                 </div>
                 <div className="loading-text">Analyzing with AI...</div>
+              </div>
+            )}
+
+            {/* ✅ URL Loading Animation - Show while analyzing URL */}
+            {urlLoading && (
+              <div className="loading-card">
+                <div className="loading-shimmer">
+                  <div className="shimmer-line title"></div>
+                  <div className="shimmer-line"></div>
+                  <div className="shimmer-line"></div>
+                  <div className="shimmer-line short"></div>
+                </div>
+                <div className="loading-text">Analyzing URL security...</div>
               </div>
             )}
 
