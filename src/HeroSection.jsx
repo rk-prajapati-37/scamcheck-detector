@@ -26,27 +26,28 @@ const HeroSection = ({
     return urlRegex.test(trimmed) ? trimmed : null;
   };
 
-  // Get risk level badge color & emoji
-  const getRiskBadgeColor = (riskLevel) => {
-    const colors = {
-      SAFE: "#10b981",
-      LOW: "#f59e0b",
-      MEDIUM: "#f97316",
-      HIGH: "#ef4444",
-      CRITICAL: "#dc2626",
-    };
-    return colors[riskLevel] || "#6b7280";
+  // Get risk level badge color based on SCORE (new API uses score-based classification)
+  const getRiskBadgeColor = (score) => {
+    if (score >= 80) return "#10b981"; // LOW RISK - Safe (Green)
+    if (score >= 60) return "#f59e0b"; // MEDIUM RISK - Caution (Yellow)
+    if (score >= 40) return "#f97316"; // HIGH RISK - Suspicious (Orange)
+    return "#ef4444"; // CRITICAL RISK - Dangerous (Red)
   };
 
-  const getRiskEmoji = (riskLevel) => {
-    const emojis = {
-      SAFE: "🟢",
-      LOW: "🟡",
-      MEDIUM: "🟠",
-      HIGH: "🔴",
-      CRITICAL: "🔥",
-    };
-    return emojis[riskLevel] || "⚪";
+  // Get risk emoji based on SCORE
+  const getRiskEmoji = (score) => {
+    if (score >= 80) return "🟢";
+    if (score >= 60) return "🟡";
+    if (score >= 40) return "🟠";
+    return "🔴";
+  };
+
+  // Extract risk level classification from score
+  const getRiskLevelFromScore = (score) => {
+    if (score >= 80) return "LOW RISK - Safe";
+    if (score >= 60) return "MEDIUM RISK - Caution";
+    if (score >= 40) return "HIGH RISK - Suspicious";
+    return "CRITICAL RISK - Dangerous";
   };
 
   // const handleSubmit = async (e) => {
@@ -127,20 +128,8 @@ const HeroSection = ({
 
       const data = await response.json();
       // If this is the demo IP example, show a deterministic SAFE sample as requested
-      if (url.includes("123.9.85.16")) {
-        setUrlResult({
-          ...data.prediction,
-          // override for demo: show SAFE sample values
-          RISK_LEVEL: "SAFE",
-          SCORE: 15,
-          CONFIDENCE: 60,
-          checks_completed: 6,
-          GoogleSafePassed: false,
-          _mockForExample: true,
-        });
-      } else {
-        setUrlResult(data.prediction);
-      }
+      // Use the API response directly (new comprehensive format)
+      setUrlResult(data.prediction);
       setUrlError(null);
     } catch (err) {
       console.error("URL analysis error:", err);
@@ -214,7 +203,7 @@ const HeroSection = ({
                     className="hero-example-link"
                     onClick={() => setQuery("http://123.9.85.16:58003/bin.sh")}
                   >
-                    Try malicious URL example{" "}
+                 🔗 Website{" "}
                     <p>http://123.9.85.16:58003/bin.sh</p>
                   </button>
                 </div>
@@ -282,73 +271,100 @@ const HeroSection = ({
               </div>
             )}
 
-            {/* ✅ URL Safety Result - Only show if URL exists in query and after main loading finishes */}
+            {/* ✅ URL Safety Result - Display new comprehensive API response */}
             {urlResult && !loading && !urlLoading && (
               <div className="url-safety-result">
+                {/* Risk Badge + Description */}
                 <div className="url-result-header">
                   <div
                     className="url-risk-badge"
                     style={{
-                      backgroundColor: getRiskBadgeColor(urlResult.RISK_LEVEL),
+                      backgroundColor: getRiskBadgeColor(urlResult.SCORE),
                     }}
                   >
-                    {getRiskEmoji(urlResult.RISK_LEVEL)} {urlResult.RISK_LEVEL}
-                  </div>
-                  <div className="url-result-score">
-                    Score: <strong>{urlResult.SCORE}</strong>
+                    {getRiskEmoji(urlResult.SCORE)} {getRiskLevelFromScore(urlResult.SCORE)}
                   </div>
                 </div>
 
+                {/* Risk Description */}
+                {urlResult.RISK_DESCRIPTION && (
+                  <div className="url-result-description">
+                    {urlResult.RISK_DESCRIPTION}
+                  </div>
+                )}
+
+                {/* Score, Confidence, Checks */}
                 <div className="url-result-details">
                   <div className="url-result-row">
-                    <span className="url-result-label">Confidence:</span>
-                    <span className="url-result-value">
-                      {urlResult.CONFIDENCE}%
-                    </span>
+                    <span className="url-result-label">Score:</span>
+                    <span className="url-result-value">{urlResult.SCORE}</span>
                   </div>
                   <div className="url-result-row">
-                    <span className="url-result-label">Checks Completed:</span>
-                    <span className="url-result-value">
-                      {urlResult.checks_completed}
-                    </span>
+                    <span className="url-result-label">Confidence:</span>
+                    <span className="url-result-value">{urlResult.CONFIDENCE}%</span>
                   </div>
-
-                  <div className="url-result-flags">
-                    {urlResult.isTemporaryDomain && (
-                      <span className="url-flag warning">
-                        ⚠️ Temporary Domain
-                      </span>
-                    )}
-                    {urlResult.hasMaliciousExtension && (
-                      <span className="url-flag danger">
-                        ⛔ Malicious Extension
-                      </span>
-                    )}
-                    {urlResult.isDirectIP && (
-                      <span className="url-flag warning">🔗 Direct IP</span>
-                    )}
-                    {urlResult.InURLVoidBlackList && (
-                      <span className="url-flag danger">
-                        🚫 URLVoid Blacklist
-                      </span>
-                    )}
-                    {urlResult.InURLHaus && (
-                      <span className="url-flag danger">⛔ URLhaus Listed</span>
-                    )}
-                    {!urlResult.isHTTPS && (
-                      <span className="url-flag warning">🔓 No HTTPS</span>
-                    )}
-                    {!urlResult.hasSSLCertificate && (
-                      <span className="url-flag warning">🔐 No SSL</span>
-                    )}
-                    {urlResult.GoogleSafePassed && (
-                      <span className="url-flag safe">✅ Google Safe</span>
-                    )}
-                    {urlResult.InTop1Million && (
-                      <span className="url-flag safe">⭐ Top 1M Domain</span>
-                    )}
+                  <div className="url-result-row">
+                    <span className="url-result-label">Checks Performed:</span>
+                    <span className="url-result-value">{urlResult.checks_performed}</span>
                   </div>
                 </div>
+
+                {/* Positive Highlights */}
+                {urlResult.positive_highlights && urlResult.positive_highlights.length > 0 && (
+                  <div className="url-result-highlights">
+                    <h4 className="highlights-title">✅ Positive Indicators</h4>
+                    <div className="highlights-list">
+                      {urlResult.positive_highlights.map((highlight, idx) => (
+                        <span key={idx} className="highlight-item safe">
+                          {highlight}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Negative Highlights */}
+                {urlResult.negative_highlights && urlResult.negative_highlights.length > 0 && (
+                  <div className="url-result-highlights">
+                    <h4 className="highlights-title">⚠️ Warnings</h4>
+                    <div className="highlights-list">
+                      {urlResult.negative_highlights.map((highlight, idx) => (
+                        <span key={idx} className="highlight-item danger">
+                          {highlight}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Technical Details */}
+                {urlResult.details && (
+                  <div className="url-result-technical-details">
+                    <h4 className="details-title">🔍 Technical Details</h4>
+                    <div className="details-grid">
+                      {Object.entries(urlResult.details).map(([key, value]) => (
+                        <div key={key} className="detail-item">
+                          <span className="detail-key">{key}:</span>
+                          <span className="detail-value">{String(value)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Similar URLs (Typosquatting) */}
+                {urlResult.target_urls && urlResult.target_urls.length > 0 && (
+                  <div className="url-result-similar">
+                    <h4 className="similar-title">🎯 Similar URLs (Typosquatting Check)</h4>
+                    <div className="similar-list">
+                      {urlResult.target_urls.map((url, idx) => (
+                        <span key={idx} className="similar-item">
+                          {url}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 

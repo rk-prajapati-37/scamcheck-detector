@@ -110,15 +110,30 @@ display: inline-block;
   text-align: center;
 }
 .hero-example-link {
-  background: transparent;
-  border: none;
-  color: #2563eb;
-  cursor: pointer;
-  font-weight: 700;
-  padding: 6px 10px;
-  border-radius: 6px;
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    background: white;
+    border: 1px solid #dbeafe;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #2563eb;
+    cursor: pointer;
+    transition: all 0.2s;
 }
-.hero-example-link:hover { background: #eaf2ff; }
+.hero-example-link:hover { border-color: #3488ee; }
+.hero-example-link p {
+    margin-block-start: 00.15em;
+    margin-block-end: 0em;
+    color: #374151;
+    font-size: 13px;
+    font-weight: normal;
+}
 .hero-input {
     width: 95%;
     background: #fefefe;
@@ -425,9 +440,22 @@ display: inline-block;
   font-weight: 700;
 }
 
+/* ==================== RISK DESCRIPTION ==================== */
+.url-result-description {
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #78350f;
+  line-height: 1.5;
+}
+
 .url-result-details {
   border-top: 1px solid #e5e7eb;
   padding-top: 12px;
+  margin-bottom: 12px;
 }
 
 .url-result-row {
@@ -447,16 +475,29 @@ display: inline-block;
   font-weight: 600;
 }
 
-.url-result-flags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+/* ==================== HIGHLIGHTS SECTION ==================== */
+.url-result-highlights {
   margin-top: 12px;
-  padding-top: 12px;
+  padding: 12px 0;
   border-top: 1px solid #e5e7eb;
 }
 
-.url-flag {
+.highlights-title {
+  margin: 0 0 10px 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.highlights-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.highlight-item {
   display: inline-block;
   padding: 6px 10px;
   border-radius: 4px;
@@ -465,19 +506,91 @@ display: inline-block;
   white-space: nowrap;
 }
 
-.url-flag.safe {
+.highlight-item.safe {
   background: #d1fae5;
   color: #065f46;
 }
 
-.url-flag.warning {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.url-flag.danger {
+.highlight-item.danger {
   background: #fee2e2;
   color: #991b1b;
+}
+
+/* ==================== TECHNICAL DETAILS SECTION ==================== */
+.url-result-technical-details {
+  margin-top: 12px;
+  padding: 12px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.details-title {
+  margin: 0 0 10px 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+  font-size: 12px;
+}
+
+.detail-key {
+  font-weight: 700;
+  color: #374151;
+  text-transform: capitalize;
+  margin-bottom: 4px;
+}
+
+.detail-value {
+  color: #111827;
+  word-break: break-all;
+}
+
+/* ==================== SIMILAR URLs / TYPOSQUATTING SECTION ==================== */
+.url-result-similar {
+  margin-top: 12px;
+  padding: 12px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.similar-title {
+  margin: 0 0 10px 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.similar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.similar-item {
+  background: #f0f9ff;
+  border-left: 3px solid #0284c7;
+  padding: 8px 10px;
+  border-radius: 2px;
+  font-size: 12px;
+  color: #0c4a6e;
+  word-break: break-all;
+  font-family: monospace;
 }
 
 .url-error-box {
@@ -532,14 +645,12 @@ display: inline-block;
     align-items: flex-start;
   }
 
-  .url-result-flags {
-    flex-direction: column;
-    gap: 6px;
+  .details-grid {
+    grid-template-columns: 1fr;
   }
 
-  .url-flag {
-    width: 100%;
-    text-align: center;
+  .similar-item {
+    font-size: 11px;
   }
 
   .scam-alert-box {
@@ -554,3 +665,4 @@ display: inline-block;
     font-size: 14px;
   }
 }
+
