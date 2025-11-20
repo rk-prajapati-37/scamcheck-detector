@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import "./WebsiteCheckSection.css";
 
-function getRiskColor(level) {
-  switch (level) {
-    case "SAFE":
-      return "#29c15c";
-    case "LOW":
-      return "#f7d41a";
-    case "MEDIUM":
-      return "#ffb624";
-    case "HIGH":
-      return "#e94825";
-    case "CRITICAL":
-      return "#08b3bb";
-    default:
-      return "#bdbdbd";
+function getRiskColor(score, riskLevel) {
+  // Based on the API documentation risk score classification
+  if (score >= 80) {
+    return "#10B981"; // Green - LOW RISK
+  } else if (score >= 60) {
+    return "#F59E0B"; // Yellow - MEDIUM RISK
+  } else if (score >= 40) {
+    return "#F97316"; // Orange - HIGH RISK
+  } else if (score >= 0) {
+    return "#EF4444"; // Red - CRITICAL RISK
   }
+  return "#6B7280"; // Gray - UNCERTAIN (low confidence)
+}
+
+function getRiskIcon(score) {
+  if (score >= 80) return "✓"; // checkmark for safe
+  if (score >= 60) return "⚠"; // warning for medium
+  if (score >= 40) return "⛔"; // stop for high
+  return "✕"; // X for critical
 }
 
 const WebsiteCheckSection = () => {
@@ -35,6 +39,8 @@ const WebsiteCheckSection = () => {
     }
 
     setLoading(true);
+    console.log("🔍 Starting URL check for:", url);
+    
     try {
       const res = await fetch(
         "https://qs0ks48sscgg0gs4wk4k08g0.vps.boomlive.in/predict",
@@ -44,14 +50,44 @@ const WebsiteCheckSection = () => {
           body: JSON.stringify({ url }),
         }
       );
+
+      console.log("📊 API Response Status:", res.status);
+
+      if (!res.ok) {
+        throw new Error(`API returned status ${res.status}`);
+      }
+
       const data = await res.json();
+      console.log("📦 API Response Data:", data);
+
+      // Handle error responses from API
+      if (data?.error) {
+        console.error("❌ API Error:", data.message);
+        setError(data.message || "API Error: Unable to analyze URL");
+        return;
+      }
+
+      // Handle timeout response
+      if (data?.code === "TIMEOUT") {
+        console.error("⏱️ Request Timeout");
+        setError("Request timeout. Website might be slow or down. Please try again.");
+        return;
+      }
+
       if (data?.prediction) {
+        console.log("✅ Prediction received:", data.prediction);
         setPrediction(data.prediction);
       } else {
+        console.warn("⚠️ No prediction in response");
         setError("No prediction returned. Please try another URL.");
       }
     } catch (err) {
-      setError("API call failed. Please try again later.");
+      console.error("❌ URL check error:", err);
+      if (err.message.includes("504")) {
+        setError("Request timeout. Please try again later.");
+      } else {
+        setError("API call failed. Please try again later.");
+      }
     }
     setLoading(false);
   };
@@ -80,85 +116,107 @@ const WebsiteCheckSection = () => {
 
       {prediction && (
         <div className="result-card">
-          <h2>Report Summary</h2>
-          <table>
-            <tbody>
-              <tr>
-                <td>Risk Level:</td>
-                <td>
-                  <span
-                    className="badge"
-                    style={{ backgroundColor: getRiskColor(prediction.RISK_LEVEL) }}
-                  >
-                    {prediction.RISK_LEVEL}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>Score (higher = more dangerous):</td>
-                <td>
-                  <span
-                    className={`score-badge ${
-                      prediction.SCORE >= 80
-                        ? "score-critical"
-                        : prediction.SCORE >= 60
-                        ? "score-high"
-                        : prediction.SCORE >= 40
-                        ? "score-medium"
-                        : "score-safe"
-                    }`}
-                  >
-                    {prediction.SCORE} / 100
-                  </span>
-                  <span className="score-text">
-                    {prediction.SCORE >= 80
-                      ? "Critical"
-                      : prediction.SCORE >= 60
-                      ? "High"
-                      : prediction.SCORE >= 40
-                      ? "Medium"
-                      : "Low / Safe"}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>Confidence:</td>
-                <td>{prediction.CONFIDENCE} %</td>
-              </tr>
-              <tr>
-                <td>Checks Completed:</td>
-                <td>{prediction.checks_completed}</td>
-              </tr>
-              <tr>
-                <td>HTTPS:</td>
-                <td>{prediction.isHTTPS ? "Yes" : "No"}</td>
-              </tr>
-              <tr>
-                <td>SSL Certificate:</td>
-                <td>{prediction.hasSSLCertificate ? "Yes" : "No"}</td>
-              </tr>
-              <tr>
-                <td>Google Safe:</td>
-                <td>{prediction.GoogleSafePassed ? "Yes" : "No"}</td>
-              </tr>
-              <tr>
-                <td>VirusTotal Detections:</td>
-                <td>{prediction.VirusTotalDetections}</td>
-              </tr>
-              <tr>
-                <td>Temporary Domain:</td>
-                <td>{prediction.isTemporaryDomain ? "Yes" : "No"}</td>
-              </tr>
-              <tr>
-                <td>Malicious Extension:</td>
-                <td>{prediction.hasMaliciousExtension ? "Yes" : "No"}</td>
-              </tr>
-              <tr>
-                <td>Direct IP:</td>
-                <td>{prediction.isDirectIP ? "Yes" : "No"}</td>
-              </tr>
-            </tbody>
-          </table>
+          <h2>
+            {getRiskIcon(prediction.SCORE)} Report Summary
+          </h2>
+
+          {/* Risk Level with description */}
+          <div className="risk-summary" style={{ borderLeftColor: getRiskColor(prediction.SCORE, prediction.RISK_LEVEL) }}>
+            <h3 style={{ color: getRiskColor(prediction.SCORE, prediction.RISK_LEVEL) }}>
+              {prediction.RISK_DESCRIPTION}
+            </h3>
+            <p><strong>Risk Level:</strong> {prediction.RISK_LEVEL}</p>
+          </div>
+
+          {/* Score and Confidence */}
+          <div className="score-section">
+            <div className="score-item">
+              <label>Safety Score</label>
+              <div className="score-bar">
+                <div
+                  className="score-fill"
+                  style={{
+                    width: `${prediction.SCORE}%`,
+                    backgroundColor: getRiskColor(prediction.SCORE),
+                  }}
+                ></div>
+              </div>
+              <span className="score-value">{prediction.SCORE}/100</span>
+            </div>
+
+            <div className="score-item">
+              <label>Confidence Level</label>
+              <div className="score-bar">
+                <div
+                  className="score-fill"
+                  style={{
+                    width: `${prediction.CONFIDENCE}%`,
+                    backgroundColor: "#3B82F6",
+                  }}
+                ></div>
+              </div>
+              <span className="score-value">{prediction.CONFIDENCE}%</span>
+            </div>
+          </div>
+
+          {/* Positive Highlights */}
+          {prediction.positive_highlights && prediction.positive_highlights.length > 0 && (
+            <div className="highlights positive-highlights">
+              <h4>✓ Positive Indicators:</h4>
+              <ul>
+                {prediction.positive_highlights.map((highlight, idx) => (
+                  <li key={idx}>{highlight}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Negative Highlights */}
+          {prediction.negative_highlights && prediction.negative_highlights.length > 0 && (
+            <div className="highlights negative-highlights">
+              <h4>⚠ Warning Signs:</h4>
+              <ul>
+                {prediction.negative_highlights.map((highlight, idx) => (
+                  <li key={idx}>{highlight}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Technical Details */}
+          {prediction.details && (
+            <div className="details-section">
+              <h4>Technical Details</h4>
+              <table className="details-table">
+                <tbody>
+                  {Object.entries(prediction.details).map(([key, value]) => (
+                    <tr key={key}>
+                      <td className="detail-key">{key.replace(/_/g, " ")}</td>
+                      <td className="detail-value">{value || "N/A"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* Checks Performed */}
+          <div className="checks-info">
+            <span>✓ Checks Performed: {prediction.checks_performed || 0}</span>
+            <span>Score Breakdown: +{prediction.positive_score || 0} | -{prediction.negative_score || 0}</span>
+          </div>
+
+          {/* Target URLs for Typosquatting cases */}
+          {prediction.target_urls && prediction.target_urls.length > 0 && (
+            <div className="target-urls">
+              <h4>⚠ Similar Legitimate Domains (Typosquatting Check):</h4>
+              <ul>
+                {prediction.target_urls.map((url, idx) => (
+                  <li key={idx}>{url}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </section>

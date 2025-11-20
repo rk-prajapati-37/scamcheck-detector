@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import RelatedArticles from "./RelatedArticles";
 import "./HeroSection.css";
+import "./WebsiteCheckSection.css";
 
 const HeroSection = ({
   onAnalyze,
@@ -13,23 +14,30 @@ const HeroSection = ({
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [urlResult, setUrlResult] = useState(null);
-  const [urlLoading, setUrlLoading] = useState(false);
   const [urlError, setUrlError] = useState(null);
-  const [lastHadURL, setLastHadURL] = useState(false);
+  const [urlLoading, setUrlLoading] = useState(false);
   const [lastHadText, setLastHadText] = useState(false);
   const example =
     "Your parcel delivery has been attempted for the 2nd time please confirm your details or your item will be returned: https://indiapots.com/in";
 
-  // Extract URL from text
-  const extractURL = (str) => {
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const matches = str.match(urlRegex);
-    return matches ? matches[0] : null;
-  };
-  const extractURLIfOnlyURL = (str) => {
+  // Extract a URL-like substring from text (accepts http(s), www, or domains like .com/.in)
+  const extractURLFromText = (str) => {
+    if (!str || typeof str !== "string") return null;
     const trimmed = str.trim();
-    const urlRegex = /^https?:\/\/[^\s]+$/i; // start to end pura URL hona chahiye
-    return urlRegex.test(trimmed) ? trimmed : null;
+    // match full http(s) URLs first
+    const httpRegex = /https?:\/\/[^\s,;"'<>]+/i;
+    const m1 = trimmed.match(httpRegex);
+    if (m1 && m1[0]) return m1[0];
+
+    // match www or domain patterns with common TLDs
+    const domainRegex = /(?:www\.)?[a-z0-9-]+\.(?:com|in|co|net|org|io|info|xyz|me|online|tech|biz)\b[^\s,;"'<>]*/i;
+    const m2 = trimmed.match(domainRegex);
+    if (m2 && m2[0]) {
+      // if it doesn't start with protocol, prepend http:// so backend accepts
+      return m2[0].startsWith("http") ? m2[0] : `http://${m2[0]}`;
+    }
+
+    return null;
   };
 
   // Get risk level badge color & emoji
@@ -44,16 +52,15 @@ const HeroSection = ({
     return colors[riskLevel] || "#6b7280";
   };
 
-  const getRiskEmoji = (riskLevel) => {
-    const emojis = {
-      SAFE: "🟢",
-      LOW: "🟡",
-      MEDIUM: "🟠",
-      HIGH: "🔴",
-      CRITICAL: "🔥",
-    };
-    return emojis[riskLevel] || "⚪";
+  const getScoreClass = (score) => {
+    if (typeof score !== 'number') return '';
+    if (score >= 80) return 'score-safe';
+    if (score >= 60) return 'score-high';
+    if (score >= 40) return 'score-medium';
+    return 'score-critical';
   };
+
+  // emoji helper removed (not used) to avoid lint warning
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -91,19 +98,22 @@ const HeroSection = ({
     e.preventDefault();
     if (!query.trim()) return;
 
-    const url = extractURLIfOnlyURL(query); // sirf agar pura input URL hai tab hi yeh value degi
+    const url = extractURLFromText(query);
 
     const hasURL = !!url;
-    const hasText = !hasURL; // Agar URL hai toh text consider nahi karenge
+    // If input contains both URL and other text, we will prefer URL mode (per requirement)
+    const textOnly = query.replace(url || "", "").trim();
+    const hasText = textOnly.length > 0;
 
-    setLastHadURL(hasURL);
-    setLastHadText(hasText);
+    // If a URL is present treat this submission as a URL-check only (hide article results)
+    setLastHadText(!hasURL && hasText);
 
     setUrlResult(null);
     setUrlError(null);
 
     if (hasURL) {
       await analyzeURL(url);
+      // Do NOT call onAnalyze when URL is present — keep UI focused on website report only
     } else {
       await onAnalyze(query.trim());
     }
@@ -174,6 +184,16 @@ const HeroSection = ({
 
   const handleExampleClick = () => setQuery(example);
 
+  const handleExampleUrlClick = async (exampleUrl) => {
+    // Fill the input and run the URL analyzer immediately
+    setQuery(exampleUrl);
+    try {
+      await analyzeURL(exampleUrl);
+    } catch (e) {
+      console.warn('Example URL analysis failed', e);
+    }
+  };
+
   return (
     <section id="home" className="hero-section">
       <div className="container">
@@ -219,24 +239,34 @@ const HeroSection = ({
                   <button
                     type="button"
                     className="hero-example-link"
-                    onClick={() => setQuery("http://123.9.85.16:58003/bin.sh")}
+                    onClick={() => handleExampleUrlClick('http://likeme.com')}
+                    aria-label="Try example website"
                   >
-                    Try malicious URL example{" "}
-                    <p>http://123.9.85.16:58003/bin.sh</p>
+                    🔗 Try this website: <span style={{ marginLeft: 8, fontWeight: 600 }}>http://likeme.com</span>
                   </button>
                 </div>
+                {/* <div style={{ marginTop: 8 }}>
+                   <button
+                    type="button"
+                    className="hero-example-link"
+                    onClick={() => setQuery("http://123.9.85.16:58003/bin.sh")}
+                  >
+                 🔗 Website{" "}
+                    <p>http://123.9.85.16:58003/bin.sh</p>
+                  </button>
+                </div> */}
               </div>
               <textarea
                 className="hero-input"
-                placeholder="Paste suspicious messages, links, phone numbers, or describe what happened here..."
+                placeholder="Paste suspicious messages, links, phone numbers, websites/URLs, or describe what happened here..."
                 value={query}
                 rows={3}
                 onChange={(e) => setQuery(e.target.value)}
                 required
                 aria-label="Suspicious content input"
               />
-              {/* Suggested keywords (if any) */}
-              {Array.isArray(suggestions) && suggestions.length > 0 && (
+              {/* Suggested keywords (if any) - hide when input contains a URL */}
+              {Array.isArray(suggestions) && suggestions.length > 0 && !extractURLFromText(query) && (
                 <div className="suggestions-row" style={{ marginTop: "8px" }}>
                   <small>Tip: try these keywords:</small>
                   <div className="suggestion-chips">
@@ -289,73 +319,135 @@ const HeroSection = ({
               </div>
             )}
 
-            {/* ✅ URL Safety Result - Only show if URL exists in query and after main loading finishes */}
-            {urlResult && !loading && (
-              <div className="url-safety-result">
-                <div className="url-result-header">
-                  <div
-                    className="url-risk-badge"
-                    style={{
-                      backgroundColor: getRiskBadgeColor(urlResult.RISK_LEVEL),
-                    }}
-                  >
-                    {getRiskEmoji(urlResult.RISK_LEVEL)} {urlResult.RISK_LEVEL}
+            {/* ✅ URL Safety Result (WebsiteCheck layout) */}
+            {urlResult && !loading && !urlLoading && (
+              <div className="result-card">
+                <h2>Report Summary</h2>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Risk Level:</td>
+                      <td>
+                        <span
+                          className="badge"
+                          style={{ backgroundColor: getRiskBadgeColor(urlResult.RISK_LEVEL) }}
+                        >
+                          {urlResult.RISK_LEVEL}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Score:</td>
+                      <td>
+                        <span className={`score-badge ${getScoreClass(Number(urlResult.SCORE))}`}>
+                          {urlResult.SCORE} / 100
+                        </span>
+                        <span className="score-text">
+                          {urlResult.SCORE >= 80
+                            ? "Safe"
+                            : urlResult.SCORE >= 60
+                            ? "Caution"
+                            : urlResult.SCORE >= 40
+                            ? "Suspicious"
+                            : "Danger"}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Confidence:</td>
+                      <td>{urlResult.CONFIDENCE} %</td>
+                    </tr>
+                    <tr>
+                      <td>Checks Completed:</td>
+                      <td>{urlResult.checks_performed || urlResult.checks_completed || 0}</td>
+                    </tr>
+                    <tr>
+                      <td>HTTPS:</td>
+                      <td>{urlResult.isHTTPS ? "Yes" : "No"}</td>
+                    </tr>
+                    <tr>
+                      <td>SSL Certificate:</td>
+                      <td>{urlResult.hasSSLCertificate ? "Yes" : "No"}</td>
+                    </tr>
+                    <tr>
+                      <td>Google Safe:</td>
+                      <td>{urlResult.GoogleSafePassed ? "Yes" : "No"}</td>
+                    </tr>
+                    <tr>
+                      <td>VirusTotal Detections:</td>
+                      <td>{urlResult.VirusTotalDetections || 0}</td>
+                    </tr>
+                    <tr>
+                      <td>Temporary Domain:</td>
+                      <td>{urlResult.isTemporaryDomain ? "Yes" : "No"}</td>
+                    </tr>
+                    <tr>
+                      <td>Malicious Extension:</td>
+                      <td>{urlResult.hasMaliciousExtension ? "Yes" : "No"}</td>
+                    </tr>
+                    <tr>
+                      <td>Direct IP:</td>
+                      <td>{urlResult.isDirectIP ? "Yes" : "No"}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                {/* Positive / Negative highlights */}
+                {urlResult.positive_highlights && urlResult.positive_highlights.length > 0 && (
+                  <div className="highlights positive-highlights" style={{ marginTop: 16 }}>
+                    <h4>✓ Positive Indicators</h4>
+                    <ul>
+                      {urlResult.positive_highlights.map((h, i) => (
+                        <li key={i}>{h}</li>
+                      ))}
+                    </ul>
                   </div>
-                  <div className="url-result-score">
-                    Score: <strong>{urlResult.SCORE}</strong>
+                )}
+
+                {urlResult.negative_highlights && urlResult.negative_highlights.length > 0 && (
+                  <div className="highlights negative-highlights" style={{ marginTop: 12 }}>
+                    <h4>⚠ Warning Signs</h4>
+                    <ul>
+                      {urlResult.negative_highlights.map((h, i) => (
+                        <li key={i}>{h}</li>
+                      ))}
+                    </ul>
                   </div>
+                )}
+
+                {/* Technical details */}
+                {urlResult.details && (
+                  <div className="details-section" style={{ marginTop: 16 }}>
+                    <h4>Technical Details</h4>
+                    <table className="details-table">
+                      <tbody>
+                        {Object.entries(urlResult.details).map(([k, v]) => (
+                          <tr key={k}>
+                            <td className="detail-key">{k.replace(/_/g, ' ')}</td>
+                            <td className="detail-value">{v || 'N/A'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {/* Score breakdown and target URLs */}
+                <div className="checks-info" style={{ marginTop: 16 }}>
+                  <span>Positive Score: {urlResult.positive_score ?? 'N/A'}</span>
+                  <span>Negative Score: {urlResult.negative_score ?? 'N/A'}</span>
+                  <span>Checks Performed: {urlResult.checks_performed ?? urlResult.checks_completed ?? 0}</span>
                 </div>
 
-                <div className="url-result-details">
-                  <div className="url-result-row">
-                    <span className="url-result-label">Confidence:</span>
-                    <span className="url-result-value">
-                      {urlResult.CONFIDENCE}%
-                    </span>
+                {urlResult.target_urls && urlResult.target_urls.length > 0 && (
+                  <div className="target-urls" style={{ marginTop: 12 }}>
+                    <h4>Similar Legitimate Domains</h4>
+                    <ul>
+                      {urlResult.target_urls.map((t, i) => (
+                        <li key={i}>{t}</li>
+                      ))}
+                    </ul>
                   </div>
-                  <div className="url-result-row">
-                    <span className="url-result-label">Checks Completed:</span>
-                    <span className="url-result-value">
-                      {urlResult.checks_completed}
-                    </span>
-                  </div>
-
-                  <div className="url-result-flags">
-                    {urlResult.isTemporaryDomain && (
-                      <span className="url-flag warning">
-                        ⚠️ Temporary Domain
-                      </span>
-                    )}
-                    {urlResult.hasMaliciousExtension && (
-                      <span className="url-flag danger">
-                        ⛔ Malicious Extension
-                      </span>
-                    )}
-                    {urlResult.isDirectIP && (
-                      <span className="url-flag warning">🔗 Direct IP</span>
-                    )}
-                    {urlResult.InURLVoidBlackList && (
-                      <span className="url-flag danger">
-                        🚫 URLVoid Blacklist
-                      </span>
-                    )}
-                    {urlResult.InURLHaus && (
-                      <span className="url-flag danger">⛔ URLhaus Listed</span>
-                    )}
-                    {!urlResult.isHTTPS && (
-                      <span className="url-flag warning">🔓 No HTTPS</span>
-                    )}
-                    {!urlResult.hasSSLCertificate && (
-                      <span className="url-flag warning">🔐 No SSL</span>
-                    )}
-                    {urlResult.GoogleSafePassed && (
-                      <span className="url-flag safe">✅ Google Safe</span>
-                    )}
-                    {urlResult.InTop1Million && (
-                      <span className="url-flag safe">⭐ Top 1M Domain</span>
-                    )}
-                  </div>
-                </div>
+                )}
               </div>
             )}
 
@@ -373,7 +465,7 @@ const HeroSection = ({
               </div>
             )} */}
             {/* Scam Alert - Related Stories */}
-            {!loading && articles && articles.length > 0 && lastHadText && (
+            {/* {!loading && articles && articles.length > 0 && lastHadText && (
               <div className="scam-alert-box">
                 <div className="scam-alert-header">
                   <span className="scam-alert-icon">🚨</span>
@@ -382,7 +474,7 @@ const HeroSection = ({
                   </h4>
                 </div>
               </div>
-            )}
+            )} */}
             {/* ✅ No Answer Message - Fixed HTML Rendering */}
             {!loading && noAnswerMsg && (
               <div
@@ -409,7 +501,7 @@ const HeroSection = ({
                 <RelatedArticles articles={articles} />
               </div>
             )} */}
-            {alertData && (
+            {alertData && lastHadText && (
               <div className="hero-alert-space" style={{ marginTop: "20px" }}>
                 {/* Alert content here if needed */}
               </div>
@@ -422,3 +514,6 @@ const HeroSection = ({
 };
 
 export default HeroSection;
+
+
+
